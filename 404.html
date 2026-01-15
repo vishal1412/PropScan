@@ -5,7 +5,8 @@
     <title>PropScan - Redirecting...</title>
     <script>
         // GitHub Pages redirect for single-page apps
-        sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search + window.location.hash);
+        var path = window.location.pathname.replace('/PropScan', '');
+        sessionStorage.setItem('redirectPath', path + window.location.search + window.location.hash);
         window.location.replace('/PropScan/');
     </script>
 </head>

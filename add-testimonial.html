@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Testimonial - PropScan</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0A2540;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        button:hover { background: #1E3A5F; }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success { background: #d4edda; color: #155724; display: block; }
+        .error { background: #f8d7da; color: #721c24; display: block; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🎯 Add Testimonial Instantly</h1>
+        <p>Click the button below to add the testimonial:</p>
+        <ul>
+            <li><strong>Name:</strong> Ajay Mishra</li>
+            <li><strong>City:</strong> Noida</li>
+            <li><strong>Message:</strong> wonderful</li>
+        </ul>
+        
+        <button onclick="addTestimonial()">✨ Add Testimonial Now</button>
+        <button onclick="viewData()" style="background: #6c757d;">👁️ View All Testimonials</button>
+        <button onclick="clearAll()" style="background: #dc3545;">🗑️ Clear All Data</button>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="dataView" style="margin-top: 20px; display: none;">
+            <h3>Current Data:</h3>
+            <pre id="dataContent"></pre>
+        </div>
+    </div>
+
+    <script>
+        function addTestimonial() {
+            const newTestimonial = {
+                id: 'test_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                name: 'Ajay Mishra',
+                city: 'Noida',
+                message: 'wonderful',
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const existing = localStorage.getItem('testimonials_data');
+                const testimonials = existing ? JSON.parse(existing) : [];
+                testimonials.push(newTestimonial);
+                localStorage.setItem('testimonials_data', JSON.stringify(testimonials));
+                
+                showStatus('success', '✅ SUCCESS! Testimonial added. Total: ' + testimonials.length + '\n\nNow visit:\n• Landing page: http://localhost:3000/\n• Admin panel: http://localhost:3000/admin');
+                
+                setTimeout(() => viewData(), 500);
+            } catch (error) {
+                showStatus('error', '❌ Error: ' + error.message);
+            }
+        }
+
+        function viewData() {
+            try {
+                const existing = localStorage.getItem('testimonials_data');
+                const testimonials = existing ? JSON.parse(existing) : [];
+                
+                document.getElementById('dataView').style.display = 'block';
+                document.getElementById('dataContent').textContent = JSON.stringify(testimonials, null, 2);
+                
+                if (testimonials.length === 0) {
+                    showStatus('error', 'No testimonials found in localStorage');
+                }
+            } catch (error) {
+                showStatus('error', 'Error viewing data: ' + error.message);
+            }
+        }
+
+        function clearAll() {
+            if (!confirm('Delete all testimonials?')) return;
+            localStorage.removeItem('testimonials_data');
+            showStatus('success', 'All data cleared!');
+            document.getElementById('dataView').style.display = 'none';
+        }
+
+        function showStatus(type, message) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + type;
+            status.textContent = message;
+        }
+
+        // Auto-load data on page load
+        window.onload = () => {
+            const existing = localStorage.getItem('testimonials_data');
+            if (existing) {
+                viewData();
+            }
+        };
+    </script>
+</body>
+</html>

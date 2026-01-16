@@ -43,7 +43,7 @@ class ErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-          <Alert variant="destructive" className="max-w-lg">
+          <Alert className="max-w-lg border-destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Application Error</AlertTitle>
             <AlertDescription className="mt-2">

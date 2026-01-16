@@ -1,0 +1,17 @@
+[
+  {
+    "id": "gurgaon",
+    "name": "Gurgaon",
+    "slug": "gurgaon"
+  },
+  {
+    "id": "noida",
+    "name": "Noida",
+    "slug": "noida"
+  },
+  {
+    "id": "dubai",
+    "name": "Dubai",
+    "slug": "dubai"
+  }
+]

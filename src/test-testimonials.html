@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Testimonials - PropScan Intelligence</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0A2540;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            background: #0A2540;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #1E3A5F;
+        }
+        button.secondary {
+            background: #6c757d;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        .testimonials-list {
+            margin-top: 30px;
+        }
+        .testimonial-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #0A2540;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Testimonials - PropScan Intelligence</h1>
+        
+        <div class="info">
+            <strong>Info:</strong> This page directly tests localStorage for testimonials. Open your browser's DevTools (F12) → Console to see debug logs.
+        </div>
+
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <h2>Add Testimonial</h2>
+        <form id="testimonialForm">
+            <div class="form-group">
+                <label for="name">Client Name *</label>
+                <input type="text" id="name" required placeholder="Enter client name">
+            </div>
+
+            <div class="form-group">
+                <label for="city">City *</label>
+                <select id="city" required>
+                    <option value="">Select city</option>
+                    <option value="Gurgaon">Gurgaon</option>
+                    <option value="Noida">Noida</option>
+                    <option value="Dubai">Dubai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bangalore">Bangalore</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Testimonial Message *</label>
+                <textarea id="message" required placeholder="Enter the testimonial message"></textarea>
+            </div>
+
+            <button type="submit">Save Testimonial</button>
+            <button type="button" class="secondary" onclick="loadTestimonials()">Refresh List</button>
+            <button type="button" class="danger" onclick="clearAllTestimonials()">Clear All</button>
+        </form>
+
+        <div class="testimonials-list">
+            <h2>Saved Testimonials (<span id="count">0</span>)</h2>
+            <div id="testimonialsList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load testimonials on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTestimonials();
+            
+            // Add test data button
+            const testButton = document.createElement('button');
+            testButton.textContent = 'Add Test Data (Ajay Mishra)';
+            testButton.className = 'secondary';
+            testButton.style.marginLeft = '10px';
+            testButton.onclick = addTestData;
+            document.querySelector('form').appendChild(testButton);
+        });
+
+        // Form submission
+        document.getElementById('testimonialForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveTestimonial();
+        });
+
+        function addTestData() {
+            document.getElementById('name').value = 'Ajay Mishra';
+            document.getElementById('city').value = 'Noida';
+            document.getElementById('message').value = 'wonderful';
+            console.log('Test data filled in form');
+            showSuccess('Test data filled! Click "Save Testimonial" to save.');
+        }
+
+        function saveTestimonial() {
+            const name = document.getElementById('name').value.trim();
+            const city = document.getElementById('city').value;
+            const message = document.getElementById('message').value.trim();
+
+            // Validation
+            if (!name || !city || !message) {
+                showError('All fields are required!');
+                return;
+            }
+
+            try {
+                // Read existing data
+                const existingData = localStorage.getItem('testimonials_data');
+                console.log('Current localStorage data:', existingData);
+                
+                const testimonialsList = existingData ? JSON.parse(existingData) : [];
+                console.log('Current testimonials count:', testimonialsList.length);
+
+                // Create new testimonial
+                const newTestimonial = {
+                    id: `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    name: name,
+                    city: city,
+                    message: message,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Append to array
+                testimonialsList.push(newTestimonial);
+                console.log('New testimonial created:', newTestimonial);
+                console.log('Total testimonials after add:', testimonialsList.length);
+
+                // Save to localStorage
+                const jsonString = JSON.stringify(testimonialsList);
+                localStorage.setItem('testimonials_data', jsonString);
+                console.log('Saved to localStorage:', jsonString);
+
+                // Verify the save
+                const verifyData = localStorage.getItem('testimonials_data');
+                const verifyParsed = JSON.parse(verifyData);
+                console.log('Verification - localStorage has', verifyParsed.length, 'testimonials');
+
+                // Show success
+                showSuccess(`Testimonial added successfully! Total: ${testimonialsList.length}`);
+
+                // Clear form
+                document.getElementById('testimonialForm').reset();
+
+                // Reload list
+                loadTestimonials();
+
+                // Dispatch storage event for other tabs
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'testimonials_data',
+                    newValue: jsonString,
+                    url: window.location.href
+                }));
+
+            } catch (error) {
+                console.error('Error saving testimonial:', error);
+                showError('Error saving testimonial: ' + error.message);
+            }
+        }
+
+        function loadTestimonials() {
+            try {
+                const existingData = localStorage.getItem('testimonials_data');
+                console.log('Loading testimonials:', existingData);
+                
+                const testimonials = existingData ? JSON.parse(existingData) : [];
+                console.log('Loaded testimonials:', testimonials);
+
+                document.getElementById('count').textContent = testimonials.length;
+
+                const listDiv = document.getElementById('testimonialsList');
+                
+                if (testimonials.length === 0) {
+                    listDiv.innerHTML = '<p style="color: #666;">No testimonials yet.</p>';
+                    return;
+                }
+
+                listDiv.innerHTML = testimonials.map(t => `
+                    <div class="testimonial-item">
+                        <strong>${t.name}</strong> - ${t.city}<br>
+                        <em>"${t.message}"</em><br>
+                        <small>Added: ${new Date(t.createdAt).toLocaleString()}</small><br>
+                        <small>ID: ${t.id}</small>
+                        <button onclick="deleteTestimonial('${t.id}')" class="danger" style="margin-top: 10px; padding: 5px 10px; font-size: 12px;">Delete</button>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                showError('Error loading testimonials: ' + error.message);
+            }
+        }
+
+        function deleteTestimonial(id) {
+            if (!confirm('Delete this testimonial?')) return;
+
+            try {
+                const existingData = localStorage.getItem('testimonials_data');
+                const testimonials = existingData ? JSON.parse(existingData) : [];
+                
+                const updated = testimonials.filter(t => t.id !== id);
+                
+                localStorage.setItem('testimonials_data', JSON.stringify(updated));
+                console.log('Testimonial deleted. Remaining:', updated.length);
+                
+                showSuccess('Testimonial deleted!');
+                loadTestimonials();
+
+            } catch (error) {
+                console.error('Error deleting:', error);
+                showError('Error deleting testimonial');
+            }
+        }
+
+        function clearAllTestimonials() {
+            if (!confirm('Delete ALL testimonials? This cannot be undone!')) return;
+
+            localStorage.removeItem('testimonials_data');
+            console.log('All testimonials cleared');
+            showSuccess('All testimonials cleared!');
+            loadTestimonials();
+        }
+
+        function showSuccess(message) {
+            const div = document.getElementById('successMessage');
+            div.textContent = message;
+            div.style.display = 'block';
+            setTimeout(() => { div.style.display = 'none'; }, 5000);
+        }
+
+        function showError(message) {
+            const div = document.getElementById('errorMessage');
+            div.textContent = message;
+            div.style.display = 'block';
+            setTimeout(() => { div.style.display = 'none'; }, 5000);
+        }
+
+        // Listen for storage changes from other tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'testimonials_data') {
+                console.log('Storage updated from another tab/window');
+                loadTestimonials();
+            }
+        });
+    </script>
+</body>
+</html>

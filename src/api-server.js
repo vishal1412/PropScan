@@ -11,6 +11,10 @@ const DATA_DIR = path.join(__dirname, 'public', 'data');
 app.use(cors());
 app.use(express.json());
 
+// Import extraction service
+const extractionRouter = require('./api-extract-service');
+app.use('/api/projects', extractionRouter);
+
 // Helper function to read JSON file
 async function readJsonFile(filename) {
   try {

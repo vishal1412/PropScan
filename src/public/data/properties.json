@@ -3,6 +3,8 @@
     {
       "name": "DLF The Arbour",
       "location": "Sector 63, Golf Course Extension Road",
+      "latitude": 28.3949,
+      "longitude": 77.0677,
       "price": "₹7.25 Cr onwards",
       "possession": "Dec 2026",
       "builder": "DLF",
@@ -28,6 +30,8 @@
     {
       "name": "M3M Altitude",
       "location": "Sector 65, Golf Course Extension Road",
+      "latitude": 28.3833,
+      "longitude": 77.0717,
       "price": "₹5.50 Cr onwards",
       "pricePerSqft": "₹17,000 – ₹18,500",
       "possession": "Dec 2026",
@@ -53,6 +57,8 @@
     {
       "name": "Godrej Aristocrat",
       "location": "Sector 49, Sohna Road, Gurgaon",
+      "latitude": 28.4089,
+      "longitude": 77.0547,
       "price": "₹3.60 Cr onwards",
       "pricePerSqft": "₹15,000 – ₹16,500",
       "possession": "Mar 2027",
@@ -78,6 +84,8 @@
     {
       "name": "Elan The Presidential",
       "location": "Sector 106, Dwarka Expressway",
+      "latitude": 28.4272,
+      "longitude": 76.9636,
       "price": "₹4.85 Cr onwards",
       "pricePerSqft": "₹19,500 – ₹22,000",
       "possession": "Currently Not Available",
@@ -105,6 +113,8 @@
     {
       "name": "Emaar Serenity Hills",
       "location": "Sector 86",
+      "latitude": 28.4031,
+      "longitude": 76.9729,
       "price": "~₹2.98 Cr",
       "pricePerSqft": "Under Process ",
       "possession": "Under process",
@@ -130,6 +140,8 @@
     {
       "name": "Ganga Nandaka",
       "location": "Sector 84, Gurugram (Near Dwarka Expressway / NH-48)",
+      "latitude": 28.4018,
+      "longitude": 76.9812,
       "price": "₹4.42 Cr , ₹5.58 Cr , ₹8.16 Cr",
       "pricePerSqft": "₹14,000 – ₹15,000 + depending on floor & view",
       "possession": "2028 (Feb/Aug 2028 range)",
@@ -160,6 +172,8 @@
     {
       "name": "Conscient Elaira Residences (Phase 1)",
       "location": "Sector 80, Gurugram",
+      "latitude": 28.4156,
+      "longitude": 77.0095,
       "price": "~₹2.60–3.15 Cr",
       "pricePerSqft": "15000 +PLC+GST ",
       "possession": "Mar 2031",
@@ -187,6 +201,8 @@
     {
       "name": "Aura 79",
       "location": "Sector 79, Gurugram",
+      "latitude": 28.4178,
+      "longitude": 77.0213,
       "price": "₹1.92 Cr*",
       "pricePerSqft": "₹12,900/sq.ft",
       "possession": "2027-2028",
@@ -220,6 +236,8 @@
     {
       "name": "ATS Knightsbridge",
       "location": "Sector 124, Noida",
+      "latitude": 28.5435,
+      "longitude": 77.4304,
       "price": "₹7.50 Cr onwards",
       "pricePerSqft": "₹25,000 – ₹28,000",
       "possession": "Dec 2026",

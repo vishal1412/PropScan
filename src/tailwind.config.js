@@ -35,6 +35,10 @@ export default {
             }
         },
         extend: {
+            fontFamily: {
+                'serif': ['Playfair Display', 'serif'],
+                'sans': ['Inter', 'system-ui', 'sans-serif'],
+            },
             colors: {
                 border: 'oklch(var(--border))',
                 input: 'oklch(var(--input))',

@@ -23,6 +23,8 @@ const CITY_NAMES: { [key: string]: string } = {
 interface FormState {
   name: string;
   location: string;
+  latitude: string;
+  longitude: string;
   price: string;
   pricePerSqft: string;
   possession: string;
@@ -45,11 +47,22 @@ interface FormState {
   numberOfFloors: string;
   brochurePath: string;
   highlighted: boolean;
+  officialWebsite: string;
+  overview: string;
+  detailedAmenities: any[];
+  floorPlans: any[];
+  constructionUpdates: any[];
+  locationDetails: any;
+  developerInfo: any;
+  documents: any[];
+  gallery: any;
 }
 
 const INITIAL_FORM_STATE: FormState = {
   name: '',
   location: '',
+  latitude: '',
+  longitude: '',
   price: '',
   pricePerSqft: '',
   possession: '',
@@ -72,6 +85,15 @@ const INITIAL_FORM_STATE: FormState = {
   numberOfFloors: '',
   brochurePath: '',
   highlighted: false,
+  officialWebsite: '',
+  overview: '',
+  detailedAmenities: [],
+  floorPlans: [],
+  constructionUpdates: [],
+  locationDetails: null,
+  developerInfo: null,
+  documents: [],
+  gallery: null,
 };
 
 export default function CityProjects({ selectedCity }: CityProjectsProps) {
@@ -205,6 +227,8 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
     setFormData({
       name: project.name,
       location: project.location,
+      latitude: (project as any).latitude || '',
+      longitude: (project as any).longitude || '',
       price: project.price,
       pricePerSqft: project.pricePerSqft || '',
       possession: project.possession || '',
@@ -227,9 +251,77 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
       numberOfFloors: project.numberOfFloors?.toString() || '',
       brochurePath: project.brochurePath || '',
       highlighted: project.highlighted || false,
+      officialWebsite: (project as any).officialWebsite || '',
+      overview: (project as any).overview || '',
+      detailedAmenities: (project as any).detailedAmenities || [],
+      floorPlans: (project as any).floorPlans || [],
+      constructionUpdates: (project as any).constructionUpdates || [],
+      locationDetails: (project as any).locationDetails || null,
+      developerInfo: (project as any).developerInfo || null,
+      documents: (project as any).documents || [],
+      gallery: (project as any).gallery || null,
     });
     setShowAddForm(true);
   }, []);
+
+  const extractAndMergeContent = useCallback(async () => {
+    if (!formData.officialWebsite) {
+      toast.error('Please enter an official website URL first');
+      return;
+    }
+
+    // Validate URL format
+    try {
+      new URL(formData.officialWebsite);
+    } catch (e) {
+      toast.error('Please enter a valid URL (e.g., https://example.com)');
+      return;
+    }
+
+    setIsLoading(true);
+    const loadingToast = toast.loading('Extracting content from website...');
+
+    try {
+      const extractedData = await DataService.extractProjectContent(
+        formData.officialWebsite,
+        formData.name || editingProject?.id || 'temp'
+      );
+
+      // Merge extracted data with formData, only filling empty fields
+      setFormData(prev => ({
+        ...prev,
+        // Only update if current field is empty
+        name: prev.name || extractedData.name || prev.name,
+        description: prev.description || extractedData.description || prev.description,
+        overview: prev.overview || extractedData.overview || prev.overview,
+        price: prev.price || extractedData.price || prev.price,
+        size: prev.size || extractedData.size || prev.size,
+        configuration: prev.configuration || extractedData.configuration || prev.configuration,
+        amenities: prev.amenities.length > 0 ? prev.amenities : (extractedData.amenities || prev.amenities),
+        images: prev.images.length > 0 ? prev.images : (extractedData.images || prev.images),
+        highlights: prev.highlights || extractedData.highlights || prev.highlights,
+        possession: prev.possession || extractedData.possession || prev.possession,
+        rera: prev.rera || extractedData.rera || prev.rera,
+        developer: prev.developer || extractedData.developer || prev.developer,
+        builder: prev.builder || extractedData.builder || prev.builder,
+        // Enhanced fields
+        detailedAmenities: extractedData.detailedAmenities || prev.detailedAmenities,
+        floorPlans: extractedData.floorPlans || prev.floorPlans,
+        constructionUpdates: extractedData.constructionUpdates || prev.constructionUpdates,
+        locationDetails: extractedData.locationDetails || prev.locationDetails,
+        developerInfo: extractedData.developerInfo || prev.developerInfo,
+        documents: extractedData.documents || prev.documents,
+        gallery: extractedData.gallery || prev.gallery,
+      }));
+
+      toast.success('Content extracted successfully! Review and save.', { id: loadingToast });
+    } catch (error: any) {
+      console.error('Extraction error:', error);
+      toast.error(error.message || 'Failed to extract content from website', { id: loadingToast });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [formData.officialWebsite, formData.name, editingProject?.id]);
 
   const handleDelete = useCallback(async () => {
     if (!selectedCity || !deletingId) return;
@@ -380,6 +472,41 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
                     value={formData.location}
                     onChange={(e) => handleInputChange('location', e.target.value)}
                     placeholder="e.g., Sector 45, Near Metro"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="latitude">Latitude</Label>
+                  <Input
+                    id="latitude"
+                    type="number"
+                    step="any"
+                    value={formData.latitude}
+                    onChange={(e) => handleInputChange('latitude', e.target.value)}
+                    placeholder="e.g., 28.4595"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="longitude">Longitude</Label>
+                  <Input
+                    id="longitude"
+                    type="number"
+                    step="any"
+                    value={formData.longitude}
+                    onChange={(e) => handleInputChange('longitude', e.target.value)}
+                    placeholder="e.g., 77.0266"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="officialWebsite">Official Website</Label>
+                  <Input
+                    id="officialWebsite"
+                    type="url"
+                    value={formData.officialWebsite}
+                    onChange={(e) => handleInputChange('officialWebsite', e.target.value)}
+                    placeholder="e.g., https://projectname.com"
                   />
                 </div>
 
@@ -763,6 +890,23 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
                   </label>
                 </div>
               </div>
+
+              {/* Import from Website Button */}
+              {formData.officialWebsite && formData.officialWebsite.startsWith('http') && (
+                <div className="pt-4 border-t">
+                  <Button
+                    onClick={extractAndMergeContent}
+                    disabled={isLoading}
+                    variant="outline"
+                    className="w-full border-blue-300 text-blue-700 hover:bg-blue-50 hover:text-blue-800"
+                  >
+                    🔄 Import Details from Official Website
+                  </Button>
+                  <p className="text-xs text-slate-500 mt-2 text-center">
+                    Extracts project details from the official website. Existing data won't be overwritten.
+                  </p>
+                </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex gap-3 pt-4 border-t">

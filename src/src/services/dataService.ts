@@ -10,6 +10,8 @@ interface Project {
   id: string;
   name: string;
   location: string;
+  latitude?: number; // Latitude for Google Maps
+  longitude?: number; // Longitude for Google Maps
   price: string;
   pricePerSqft?: string; // Per square foot price
   possession: string;
@@ -33,6 +35,80 @@ interface Project {
   brochurePath?: string; // Path to project brochure file
   highlighted?: boolean; // Highlight this project with special frame
   createdAt: string;
+  
+  // Enhanced content fields for web extraction
+  officialWebsite?: string; // Official project website URL
+  overview?: string; // Detailed project overview (can be extracted)
+  detailedAmenities?: DetailedAmenity[]; // Amenities with categories and descriptions
+  floorPlans?: FloorPlan[]; // Floor plan images and details
+  constructionUpdates?: ConstructionUpdate[]; // Construction progress updates
+  locationDetails?: LocationDetails; // Detailed location info
+  developerInfo?: DeveloperInfo; // Detailed developer information
+  documents?: ProjectDocument[]; // Additional documents (brochures, PDFs)
+  gallery?: ProjectGallery; // Organized image gallery
+}
+
+interface DetailedAmenity {
+  id: string;
+  name: string;
+  category?: string; // e.g., "Sports", "Leisure", "Security"
+  description?: string;
+  icon?: string;
+  image?: string;
+}
+
+interface FloorPlan {
+  id: string;
+  title: string; // e.g., "3 BHK - Type A"
+  image: string;
+  size?: string; // e.g., "1850 sq ft"
+  bedrooms?: string;
+  bathrooms?: string;
+  description?: string;
+  pdfUrl?: string;
+}
+
+interface ConstructionUpdate {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  images?: string[];
+  progress?: number; // Percentage
+}
+
+interface LocationDetails {
+  address?: string;
+  microLocation?: string;
+  description?: string;
+  connectivity?: string[]; // e.g., ["5 mins to NH-48", "10 mins to IGI Airport"]
+  nearbyLandmarks?: string[];
+}
+
+interface DeveloperInfo {
+  name: string;
+  about?: string;
+  experience?: string;
+  completedProjects?: number;
+  ongoingProjects?: number;
+  logo?: string;
+  website?: string;
+}
+
+interface ProjectDocument {
+  id: string;
+  title: string;
+  type: 'brochure' | 'floorplan' | 'other';
+  url: string;
+  size?: string;
+}
+
+interface ProjectGallery {
+  exterior?: string[];
+  interior?: string[];
+  amenities?: string[];
+  location?: string[];
+  construction?: string[];
 }
 
 interface PropertiesData {
@@ -363,6 +439,33 @@ export class DataService {
       localStorage.removeItem(key);
     });
     console.log('✅ localStorage cleared - now using JSON files');
+  }
+
+  // Extract project content from official website
+  static async extractProjectContent(url: string, projectId: string): Promise<any> {
+    const EXTRACT_URL = `${API_BASE_URL}/projects/extract`;
+    
+    try {
+      console.log(`[Extract] Starting extraction for ${projectId} from ${url}`);
+      
+      const response = await fetch(EXTRACT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, projectId })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || 'Extraction failed');
+      }
+
+      const result = await response.json();
+      console.log('[Extract] Extraction successful:', result.data);
+      return result.data;
+    } catch (error: any) {
+      console.error('[Extract] Error:', error);
+      throw new Error(error.message || 'Failed to extract content from website');
+    }
   }
 
   // Debug info for admin panel

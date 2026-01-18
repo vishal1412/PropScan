@@ -116,7 +116,7 @@ export default function ProjectDetailsPage() {
             className="text-white hover:bg-white/10 mb-6"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to {cityName?.charAt(0).toUpperCase() + cityName?.slice(1)} Properties
+            Back to {cityName ? cityName.charAt(0).toUpperCase() + cityName.slice(1) : ''} Properties
           </Button>
 
           <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -141,7 +141,7 @@ export default function ProjectDetailsPage() {
                 {project.location && (
                   <div className="flex items-center gap-2">
                     <MapPin className="h-5 w-5" />
-                    <span className="text-lg">{project.location}, {cityName?.charAt(0).toUpperCase() + cityName?.slice(1)}</span>
+                    <span className="text-lg">{project.location}, {cityName ? cityName.charAt(0).toUpperCase() + cityName.slice(1) : ''}</span>
                   </div>
                 )}
                 
@@ -450,7 +450,7 @@ export default function ProjectDetailsPage() {
             <CardContent className="p-8">
               {project.location && (
                 <p className="text-slate-700 mb-6 text-lg">
-                  Located in {project.location}, {cityName?.charAt(0).toUpperCase() + cityName?.slice(1)}
+                  Located in {project.location}, {cityName ? cityName.charAt(0).toUpperCase() + cityName.slice(1) : ''}
                 </p>
               )}
               <div className="aspect-video bg-slate-200 rounded-lg flex items-center justify-center">

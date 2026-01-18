@@ -159,81 +159,81 @@ export default function ProjectDetailsPage() {
         {/* Back Button with Glass Effect */}
         <button
           onClick={() => navigate({ to: `/city/${cityName}` })}
-          className="absolute top-6 left-6 z-20 flex items-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-xl transition-all duration-300 hover:scale-105"
+          className="absolute top-6 left-6 z-20 flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-lg transition-all duration-300"
         >
-          <ArrowLeft className="h-5 w-5" />
-          <span className="font-semibold">Back to {cityDisplay}</span>
+          <ArrowLeft className="h-4 w-4" />
+          <span className="font-medium text-sm">{cityDisplay}</span>
         </button>
 
-        {/* Hero Content - Launch Banner Style */}
+        {/* Hero Content - Refined & Calm */}
         <div className="relative z-10 h-full flex items-center">
           <div className="container mx-auto px-6 lg:px-16">
-            <div className="max-w-5xl">
+            <div className="max-w-5xl space-y-6">
               {/* Project Status Badge */}
               {project.projectStatus && (
-                <div className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full mb-8 font-bold text-sm tracking-wide uppercase shadow-lg">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-600/90 text-white rounded-full text-xs font-medium tracking-wide uppercase">
                   {project.projectStatus}
                 </div>
               )}
               
-              {/* Project Name - SIGNIFICANTLY LARGER */}
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tight">
+              {/* Project Name - 40-44px, weight 500-600 */}
+              <h1 className="text-[2.5rem] md:text-[2.75rem] font-semibold text-white leading-[1.15] tracking-tight">
                 {project.name}
               </h1>
               
-              {/* Location - Smaller, Elegant */}
+              {/* Location - Elegant, muted */}
               {project.location && (
-                <div className="flex items-center gap-3 text-white/95 mb-4 text-lg md:text-xl">
-                  <MapPin className="h-6 w-6" />
-                  <span className="font-light">{project.location}, {cityDisplay}</span>
+                <div className="flex items-center gap-2 text-white/80 text-sm">
+                  <MapPin className="h-4 w-4" />
+                  <span className="font-normal">{project.location}, {cityDisplay}</span>
                 </div>
               )}
               
               {/* Developer - Refined */}
               {project.builder && (
-                <div className="flex items-center gap-3 text-white/90 mb-10 text-base md:text-lg">
-                  <Building2 className="h-5 w-5" />
-                  <span className="font-light">By {project.builder}</span>
+                <div className="flex items-center gap-2 text-white/75 text-sm">
+                  <Building2 className="h-4 w-4" />
+                  <span className="font-normal">By {project.builder}</span>
                 </div>
               )}
 
-              {/* Price - Visually Highlighted Pill/Card */}
+              {/* Price - Subtle Card */}
               {project.price && (
-                <div className="inline-block bg-white/95 backdrop-blur-lg rounded-2xl px-10 py-6 mb-12 shadow-2xl">
-                  <p className="text-slate-500 text-sm font-semibold uppercase tracking-wide mb-1">Starting From</p>
-                  <p className="text-5xl md:text-6xl font-black text-slate-900">{project.price}</p>
+                <div className="inline-block bg-white/95 backdrop-blur-lg rounded-xl px-8 py-4 mt-2 shadow-lg">
+                  <p className="text-slate-500 text-[10px] font-medium uppercase tracking-wider mb-1">Starting From</p>
+                  <p className="text-3xl font-semibold text-slate-900 tracking-tight">{project.price}</p>
                   {project.pricePerSqft && (
-                    <p className="text-slate-600 font-medium mt-2">@ {project.pricePerSqft}</p>
+                    <p className="text-slate-600 text-xs font-normal mt-1">@ {project.pricePerSqft}</p>
                   )}
                 </div>
               )}
 
-              {/* Primary CTAs - Increased Padding & Glass Effect */}
-              <div className="flex flex-wrap gap-5">
+              {/* Primary CTAs - Refined & Inviting */}
+              <div className="flex flex-wrap gap-3 pt-4">
                 <Button
                   size="lg"
                   onClick={() => setShowContactModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 text-white px-12 py-7 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-blue-600/50 transition-all duration-300"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-5 text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <Phone className="h-6 w-6 mr-3" />
+                  <Phone className="h-4 w-4 mr-2" />
                   Book Site Visit
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => setShowContactModal(true)}
-                  className="bg-white/95 hover:bg-white hover:-translate-y-1 text-slate-900 border-0 px-12 py-7 text-lg font-bold rounded-2xl shadow-2xl transition-all duration-300"
+                  className="bg-white/95 hover:bg-white text-slate-900 border-0 px-8 py-5 text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <Mail className="h-6 w-6 mr-3" />
+                  <Mail className="h-4 w-4 mr-2" />
                   Enquire Now
                 </Button>
                 {project.brochurePath && (
                   <Button
                     size="lg"
                     variant="outline"
-                    className="bg-white/10 hover:bg-white/20 hover:-translate-y-1 backdrop-blur-lg text-white border-white/30 px-12 py-7 text-lg font-bold rounded-2xl transition-all duration-300"
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-lg text-white border-white/30 px-8 py-5 text-sm font-medium rounded-lg transition-all duration-300"
                   >
-                    <Download className="h-6 w-6 mr-3" />
+                    <Download className="h-4 w-4 mr-2" />
                     Download Brochure
                   </Button>
                 )}
@@ -244,7 +244,7 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* 2. REFINED STICKY NAVIGATION BAR */}
-      <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-slate-200 shadow-md">
+      <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-slate-200/60 shadow-sm">
         <div className="container mx-auto px-6 lg:px-16">
           <div className="flex overflow-x-auto scrollbar-hide">
             {[
@@ -259,7 +259,7 @@ export default function ProjectDetailsPage() {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`relative px-10 py-6 text-base font-bold whitespace-nowrap transition-all duration-300 ${
+                className={`relative px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                   activeSection === item.id
                     ? 'text-blue-600'
                     : 'text-slate-600 hover:text-slate-900'
@@ -267,7 +267,7 @@ export default function ProjectDetailsPage() {
               >
                 {item.label}
                 {activeSection === item.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 rounded-t-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-t-full" />
                 )}
               </button>
             ))}
@@ -278,17 +278,17 @@ export default function ProjectDetailsPage() {
       {/* MAIN CONTENT SECTIONS */}
       
       {/* 3. OVERVIEW SECTION - Storytelling Layout */}
-      <section id="overview" className="py-28 bg-white scroll-mt-24">
+      <section id="overview" className="py-20 bg-white scroll-mt-24">
         <div className="container mx-auto px-6 lg:px-16">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-12">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl font-medium text-slate-900 mb-8 tracking-tight">
               Overview
             </h2>
             {project.description && (
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {project.description.split('\n\n').map((paragraph, idx) => (
                   paragraph.trim() && (
-                    <p key={idx} className="text-2xl text-slate-700 leading-relaxed font-light">
+                    <p key={idx} className="text-[15px] text-slate-600 leading-[1.7] font-normal">
                       {paragraph}
                     </p>
                   )
@@ -300,60 +300,60 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* 4. PROJECT SNAPSHOT - Luxury Fact Panel */}
-      <section id="snapshot" className="py-28 bg-slate-50 scroll-mt-24">
+      <section id="snapshot" className="py-20 bg-slate-50 scroll-mt-24">
         <div className="container mx-auto px-6 lg:px-16">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-16">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl font-medium text-slate-900 mb-10 tracking-tight">
               Project Snapshot
             </h2>
-            <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
-              <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-200/60">
+              <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200/60">
                 {project.landArea && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Land Area</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.landArea}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Land Area</p>
+                    <p className="text-xl font-medium text-slate-900">{project.landArea}</p>
                   </div>
                 )}
                 {project.numberOfTowers && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Number of Towers</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.numberOfTowers}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Number of Towers</p>
+                    <p className="text-xl font-medium text-slate-900">{project.numberOfTowers}</p>
                   </div>
                 )}
                 {project.numberOfFloors && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Floors</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.numberOfFloors}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Floors</p>
+                    <p className="text-xl font-medium text-slate-900">{project.numberOfFloors}</p>
                   </div>
                 )}
                 {project.size && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Unit Sizes</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.size}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Unit Sizes</p>
+                    <p className="text-xl font-medium text-slate-900">{project.size}</p>
                   </div>
                 )}
                 {project.configuration && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Configurations</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.configuration}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Configurations</p>
+                    <p className="text-xl font-medium text-slate-900">{project.configuration}</p>
                   </div>
                 )}
                 {project.projectStatus && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Project Status</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.projectStatus}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Project Status</p>
+                    <p className="text-xl font-medium text-slate-900">{project.projectStatus}</p>
                   </div>
                 )}
                 {project.possession && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Possession</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.possession}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">Possession</p>
+                    <p className="text-xl font-medium text-slate-900">{project.possession}</p>
                   </div>
                 )}
                 {project.rera && (
-                  <div className="p-10 md:p-12 hover:bg-white/50 transition-all duration-300">
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">RERA Number</p>
-                    <p className="text-3xl md:text-4xl font-black text-slate-900">{project.rera}</p>
+                  <div className="p-8 hover:bg-slate-50/50 transition-colors duration-200">
+                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">RERA Number</p>
+                    <p className="text-xl font-medium text-slate-900">{project.rera}</p>
                   </div>
                 )}
               </div>
@@ -364,20 +364,20 @@ export default function ProjectDetailsPage() {
 
       {/* 5. HIGHLIGHTS SECTION - Aspirational Showcase */}
       {project.highlights && (
-        <section id="highlights" className="py-28 bg-white scroll-mt-24">
+        <section id="highlights" className="py-20 bg-white scroll-mt-24">
           <div className="container mx-auto px-6 lg:px-16">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-16 text-center">
+            <div className="max-w-5xl mx-auto">
+              <h2 className="text-2xl font-medium text-slate-900 mb-10 tracking-tight text-center">
                 Project Highlights
               </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {project.highlights.split('\n').map((highlight, idx) => (
                   highlight.trim() && (
-                    <div key={idx} className="flex flex-col items-center text-center gap-5 p-8 rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                      <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
-                        <CheckCircle className="h-10 w-10 text-white" />
+                    <div key={idx} className="flex items-start gap-4 p-6 rounded-xl bg-slate-50/80 border border-slate-200/60 hover:shadow-md hover:bg-white transition-all duration-200">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center">
+                        <CheckCircle className="h-5 w-5 text-blue-600" />
                       </div>
-                      <p className="text-xl font-semibold text-slate-800 leading-relaxed">{highlight.replace(/^[✔✓•-]\s*/, '')}</p>
+                      <p className="text-[15px] font-normal text-slate-700 leading-relaxed">{highlight.replace(/^[✔✓•-]\s*/, '')}</p>
                     </div>
                   )
                 ))}
@@ -388,43 +388,43 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Price & Payment Section - Premium CTA */}
-      <section className="py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+      <section className="py-20 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] " />
         <div className="container mx-auto px-6 lg:px-16 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-5xl md:text-7xl font-black mb-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-medium mb-6">
               Pricing & Payment Plans
             </h2>
-            <p className="text-2xl text-slate-300 mb-16 font-light">
+            <p className="text-base text-slate-300 mb-12 font-normal leading-relaxed">
               Flexible payment options tailored to your needs
             </p>
             
             {project.price && (
-              <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 md:p-16 mb-14 inline-block border border-white/20 shadow-2xl">
-                <p className="text-slate-300 mb-4 text-lg uppercase tracking-wider font-bold">Starting From</p>
-                <p className="text-7xl md:text-8xl font-black mb-4">{project.price}</p>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-10 mb-10 inline-block border border-white/10 shadow-lg">
+                <p className="text-slate-300 mb-2 text-[10px] uppercase tracking-wider font-medium">Starting From</p>
+                <p className="text-5xl font-semibold mb-2">{project.price}</p>
                 {project.pricePerSqft && (
-                  <p className="text-slate-300 text-xl font-medium">@ {project.pricePerSqft}</p>
+                  <p className="text-slate-300 text-sm font-normal">@ {project.pricePerSqft}</p>
                 )}
               </div>
             )}
 
             {project.paymentPlan && (
-              <div className="bg-white/5 backdrop-blur-sm rounded-3xl p-10 md:p-12 mb-14 text-left max-w-3xl mx-auto border border-white/10">
-                <h3 className="text-3xl font-black mb-8">Payment Plan</h3>
-                <div className="space-y-4 text-slate-300">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 mb-10 text-left max-w-2xl mx-auto border border-white/5">
+                <h3 className="text-lg font-medium mb-6">Payment Plan</h3>
+                <div className="space-y-3 text-slate-300">
                   {project.paymentPlan.split('\n').map((line, idx) => (
-                    line.trim() && <p key={idx} className="text-xl leading-relaxed">{line}</p>
+                    line.trim() && <p key={idx} className="text-sm leading-relaxed font-normal">{line}</p>
                   ))}
                 </div>
               </div>
             )}
 
-            <div className="flex flex-wrap gap-6 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center">
               <Button
                 size="lg"
                 onClick={() => setShowContactModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 hover:-translate-y-2 hover:shadow-2xl text-white px-16 py-8 text-xl font-bold rounded-2xl shadow-xl transition-all duration-300"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 text-sm font-medium rounded-lg shadow-lg transition-all duration-200"
               >
                 Get Best Price
               </Button>
@@ -432,9 +432,9 @@ export default function ProjectDetailsPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-white/10 hover:bg-white/20 hover:-translate-y-2 backdrop-blur-lg text-white border-2 border-white/30 px-16 py-8 text-xl font-bold rounded-2xl transition-all duration-300"
+                  className="bg-white/10 hover:bg-white/20 backdrop-blur-lg text-white border border-white/20 px-10 py-5 text-sm font-medium rounded-lg transition-all duration-200"
                 >
-                  <Download className="h-6 w-6 mr-3" />
+                  <Download className="h-4 w-4 mr-2" />
                   Download Brochure
                 </Button>
               )}
@@ -444,32 +444,32 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* 6. PLANS SECTION - Visual First with Captions */}
-      <section id="plans" className="py-28 bg-white scroll-mt-24">
+      <section id="plans" className="py-20 bg-white scroll-mt-24">
         <div className="container mx-auto px-6 lg:px-16">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-20 text-center">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-medium text-slate-900 mb-12 text-center tracking-tight">
               Site & Floor Plans
             </h2>
             {images.length > 0 && (
-              <div className="grid md:grid-cols-2 gap-12">
+              <div className="grid md:grid-cols-2 gap-8">
                 {images.map((img, idx) => (
                   <div key={idx} className="group">
                     <div
-                      className="relative aspect-[16/10] rounded-3xl overflow-hidden cursor-pointer shadow-2xl hover:shadow-3xl transition-all duration-500"
+                      className="relative aspect-[16/10] rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
                       onClick={() => {
                         setLightboxImage(img);
                         setShowLightbox(true);
                       }}
                     >
-                      <img src={img} alt={`Plan ${idx + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                          <span className="text-white text-xl font-bold">View Full Size</span>
-                          <Maximize2 className="h-8 w-8 text-white" />
+                      <img src={img} alt={`Plan ${idx + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                          <span className="text-white text-sm font-medium">View Full Size</span>
+                          <Maximize2 className="h-5 w-5 text-white" />
                         </div>
                       </div>
                     </div>
-                    <p className="text-center text-slate-600 mt-6 text-lg font-medium">Plan {idx + 1}</p>
+                    <p className="text-center text-slate-500 mt-3 text-sm font-normal">Plan {idx + 1}</p>
                   </div>
                 ))}
               </div>
@@ -480,22 +480,22 @@ export default function ProjectDetailsPage() {
 
       {/* 7. AMENITIES SECTION - World-Class Experience */}
       {amenities.length > 0 && (
-        <section id="amenities" className="py-28 bg-slate-50 scroll-mt-24">
+        <section id="amenities" className="py-20 bg-slate-50 scroll-mt-24">
           <div className="container mx-auto px-6 lg:px-16">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-20 text-center">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl font-medium text-slate-900 mb-12 text-center tracking-tight">
                 World-Class Amenities
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {amenities.map((amenity, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-center gap-5 p-8 bg-white rounded-2xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-200"
+                    className="flex flex-col items-center gap-3 p-5 bg-white rounded-lg hover:shadow-md transition-all duration-200 border border-slate-200/60"
                   >
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
-                      <Home className="h-10 w-10 text-white" />
+                    <div className="w-12 h-12 rounded-lg bg-blue-600/10 flex items-center justify-center">
+                      <Home className="h-6 w-6 text-blue-600" />
                     </div>
-                    <p className="text-center text-slate-800 font-semibold text-lg">{amenity}</p>
+                    <p className="text-center text-slate-700 font-normal text-sm">{amenity}</p>
                   </div>
                 ))}
               </div>
@@ -505,22 +505,22 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Mid-Page CTA - Emotional Appeal */}
-      <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+      <section className="py-16 bg-gradient-to-br from-blue-600 to-blue-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] " />
         <div className="container mx-auto px-6 lg:px-16 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h3 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight">
+          <div className="max-w-3xl mx-auto text-center">
+            <h3 className="text-3xl font-medium text-white mb-5 leading-tight">
               Your Dream Home Awaits
             </h3>
-            <p className="text-2xl text-blue-100 mb-12 font-light leading-relaxed">
+            <p className="text-base text-blue-100 mb-8 font-normal leading-relaxed">
               Experience luxury living at its finest. Schedule a personalized site visit and discover why this is the perfect place to call home.
             </p>
             <Button
               size="lg"
               onClick={() => setShowContactModal(true)}
-              className="bg-white text-blue-600 hover:bg-slate-50 hover:-translate-y-2 hover:shadow-2xl px-16 py-8 text-xl font-bold rounded-2xl shadow-xl transition-all duration-300"
+              className="bg-white text-blue-600 hover:bg-slate-50 px-10 py-5 text-sm font-medium rounded-lg shadow-lg transition-all duration-200"
             >
-              <Phone className="h-6 w-6 mr-3" />
+              <Phone className="h-4 w-4 mr-2" />
               Schedule Your Visit
             </Button>
           </div>
@@ -528,33 +528,33 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* 8. LOCATION SECTION - Connectivity Experience */}
-      <section id="location" className="py-28 bg-white scroll-mt-24">
+      <section id="location" className="py-20 bg-white scroll-mt-24">
         <div className="container mx-auto px-6 lg:px-16">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-12 text-center">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl font-medium text-slate-900 mb-8 text-center tracking-tight">
               Prime Location
             </h2>
             {project.location && (
-              <p className="text-3xl text-slate-700 mb-16 text-center font-light">
+              <p className="text-lg text-slate-600 mb-10 text-center font-normal">
                 {project.location}, {cityDisplay}
               </p>
             )}
-            <div className="aspect-[21/9] bg-gradient-to-br from-slate-200 to-slate-300 rounded-3xl overflow-hidden mb-14 shadow-2xl border border-slate-300">
+            <div className="aspect-[21/9] bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl overflow-hidden mb-10 shadow-sm border border-slate-200/60">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center p-12">
-                  <MapPin className="h-20 w-20 text-slate-400 mx-auto mb-6" />
-                  <p className="text-slate-500 text-xl font-medium">Interactive map integration</p>
+                <div className="text-center p-8">
+                  <MapPin className="h-12 w-12 text-slate-400 mx-auto mb-3" />
+                  <p className="text-slate-500 text-sm font-normal">Interactive map integration</p>
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-slate-50 to-white rounded-3xl p-12 md:p-16 border border-slate-200 shadow-xl">
-              <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-8">Location Advantages</h3>
-              <div className="space-y-6">
-                <p className="text-2xl text-slate-700 leading-relaxed font-light">
+            <div className="bg-slate-50 rounded-xl p-8 md:p-10 border border-slate-200/60">
+              <h3 className="text-lg font-medium text-slate-900 mb-5">Location Advantages</h3>
+              <div className="space-y-4">
+                <p className="text-[15px] text-slate-600 leading-[1.7] font-normal">
                   Strategically positioned in {project.location}, this premium development offers unparalleled connectivity 
                   to major business districts, entertainment zones, and key infrastructure.
                 </p>
-                <p className="text-2xl text-slate-700 leading-relaxed font-light">
+                <p className="text-[15px] text-slate-600 leading-[1.7] font-normal">
                   Experience the perfect harmony of urban convenience and serene living, with easy access to highways, 
                   metro stations, and essential amenities right at your doorstep.
                 </p>
@@ -566,28 +566,28 @@ export default function ProjectDetailsPage() {
 
       {/* 9. ABOUT THE DEVELOPER - Brand Story */}
       {project.builder && (
-        <section className="py-28 bg-slate-50">
+        <section className="py-20 bg-slate-50">
           <div className="container mx-auto px-6 lg:px-16">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-20 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-medium text-slate-900 mb-12 text-center tracking-tight">
                 About the Developer
               </h2>
-              <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl p-12 md:p-20 border border-slate-200">
-                <div className="mb-10">
-                  <h3 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">{project.builder}</h3>
-                  <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" />
+              <div className="bg-white rounded-xl shadow-sm p-10 md:p-12 border border-slate-200/60">
+                <div className="mb-6">
+                  <h3 className="text-xl font-medium text-slate-900 mb-3">{project.builder}</h3>
+                  <div className="w-16 h-0.5 bg-blue-600 rounded-full" />
                 </div>
-                <div className="space-y-8 text-slate-700">
-                  <p className="text-2xl leading-relaxed font-light">
+                <div className="space-y-5 text-slate-600">
+                  <p className="text-[15px] leading-[1.7] font-normal">
                     {project.builder} stands as a distinguished name in real estate development, renowned for creating 
                     architectural masterpieces that redefine contemporary living standards.
                   </p>
-                  <p className="text-2xl leading-relaxed font-light">
+                  <p className="text-[15px] leading-[1.7] font-normal">
                     With decades of expertise and an unwavering commitment to excellence, they have established 
                     themselves as industry leaders, delivering projects that seamlessly blend innovation, quality, 
                     and timely execution.
                   </p>
-                  <p className="text-2xl leading-relaxed font-light">
+                  <p className="text-[15px] leading-[1.7] font-normal">
                     Their distinguished portfolio showcases a legacy of trust, making them one of the most 
                     sought-after developers in the premium real estate sector.
                   </p>
@@ -599,31 +599,31 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* 10. FINAL CONTACT SECTION - Premium CTA */}
-      <section id="contact" className="py-32 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white scroll-mt-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+      <section id="contact" className="py-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white scroll-mt-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6TTI0IDI2YzAtMy4zMTQgMi42ODYtNiA2LTZzNiAyLjY4NiA2IDYtMi42ODYgNi02IDYtNi0yLjY4Ni02LTZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] " />
         <div className="container mx-auto px-6 lg:px-16 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-5xl md:text-7xl font-black mb-10 leading-tight">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-medium mb-6 leading-tight">
               Ready to Make This Your Home?
             </h2>
-            <p className="text-2xl text-blue-100 mb-16 font-light leading-relaxed">
+            <p className="text-base text-blue-100 mb-10 font-normal leading-relaxed">
               Connect with our property experts for personalized assistance, exclusive offers, and priority access to site visits
             </p>
-            <div className="flex flex-wrap gap-6 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center">
               <Button
                 size="lg"
                 onClick={() => setShowContactModal(true)}
-                className="bg-white text-blue-600 hover:bg-slate-50 hover:-translate-y-2 hover:shadow-2xl px-16 py-8 text-xl font-bold rounded-2xl shadow-xl transition-all duration-300"
+                className="bg-white text-blue-600 hover:bg-slate-50 px-10 py-5 text-sm font-medium rounded-lg shadow-lg transition-all duration-200"
               >
-                <Phone className="h-6 w-6 mr-3" />
+                <Phone className="h-4 w-4 mr-2" />
                 Book Site Visit
               </Button>
               <Button
                 size="lg"
                 onClick={() => setShowContactModal(true)}
-                className="bg-white/10 hover:bg-white/20 hover:-translate-y-2 backdrop-blur-lg text-white border-2 border-white/30 px-16 py-8 text-xl font-bold rounded-2xl transition-all duration-300"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-lg text-white border border-white/20 px-10 py-5 text-sm font-medium rounded-lg transition-all duration-200"
               >
-                <Mail className="h-6 w-6 mr-3" />
+                <Mail className="h-4 w-4 mr-2" />
                 Contact Property Advisor
               </Button>
             </div>
@@ -657,13 +657,13 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* Sticky Bottom CTA (Mobile) - Premium Styling */}
-      <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white/95 backdrop-blur-lg border-t border-slate-200 shadow-2xl p-5 z-30">
+      <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white/95 backdrop-blur-lg border-t border-slate-200/60 shadow-lg p-4 z-30">
         <Button
           size="lg"
           onClick={() => setShowContactModal(true)}
-          className="w-full bg-blue-600 hover:bg-blue-700 hover:shadow-xl text-white font-bold py-7 rounded-xl transition-all duration-300"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-5 rounded-lg transition-all duration-200"
         >
-          <Phone className="h-6 w-6 mr-2" />
+          <Phone className="h-4 w-4 mr-2" />
           Contact Now
         </Button>
       </div>

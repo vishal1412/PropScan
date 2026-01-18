@@ -146,6 +146,7 @@ app.get('/api/properties/:city', async (req, res) => {
 
 app.post('/api/properties/:city', async (req, res) => {
   try {
+    console.log(`📝 POST /api/properties/${req.params.city}`, JSON.stringify(req.body, null, 2));
     const properties = await readJsonFile('properties.json');
     const city = req.params.city.toLowerCase();
     if (!properties[city]) {
@@ -159,14 +160,17 @@ app.post('/api/properties/:city', async (req, res) => {
     };
     properties[city].push(newProperty);
     await writeJsonFile('properties.json', properties);
+    console.log(`✅ Property added to ${city}:`, newProperty.id);
     res.json(newProperty);
   } catch (error) {
+    console.error('❌ Error adding property:', error);
     res.status(500).json({ error: 'Failed to add property' });
   }
 });
 
 app.put('/api/properties/:city/:id', async (req, res) => {
   try {
+    console.log(`📝 PUT /api/properties/${req.params.city}/${req.params.id}`);
     const properties = await readJsonFile('properties.json');
     const city = req.params.city.toLowerCase();
     if (!properties[city]) {
@@ -178,8 +182,10 @@ app.put('/api/properties/:city/:id', async (req, res) => {
     }
     properties[city][index] = { ...properties[city][index], ...req.body };
     await writeJsonFile('properties.json', properties);
+    console.log(`✅ Property updated in ${city}:`, req.params.id);
     res.json(properties[city][index]);
   } catch (error) {
+    console.error('❌ Error updating property:', error);
     res.status(500).json({ error: 'Failed to update property' });
   }
 });

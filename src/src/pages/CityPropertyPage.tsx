@@ -592,11 +592,12 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
                       variant="outline" 
                       className="w-full"
                       onClick={() => {
-                        // Could open a modal or navigate to details page
-                        console.log('View details for:', property.name);
+                        const projectSlug = property.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        navigate({ to: `/city/${citySlug}/project/${projectSlug}` });
                       }}
                     >
-                      View Full Details
+                      More Details
+                      <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </CardContent>
                 </Card>

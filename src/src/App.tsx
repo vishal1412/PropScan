@@ -4,6 +4,7 @@ import { Component, ErrorInfo, ReactNode, useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import AdminPanel from './pages/AdminPanel';
 import CityPropertyPage from './pages/CityPropertyPage';
+import ProjectDetailsPage from './pages/ProjectDetailsPage';
 import { Toaster } from './components/ui/sonner';
 import { ThemeProvider } from 'next-themes';
 import { Alert, AlertDescription, AlertTitle } from './components/ui/alert';
@@ -111,12 +112,19 @@ const dubaiRoute = createRoute({
   component: () => <CityPropertyPage citySlug="dubai" />,
 });
 
+const projectDetailsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/city/$cityName/project/$projectSlug',
+  component: ProjectDetailsPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   adminRoute,
   gurgaonRoute,
   noidaRoute,
   dubaiRoute,
+  projectDetailsRoute,
 ]);
 
 const router = createRouter({ 

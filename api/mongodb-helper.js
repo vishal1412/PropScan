@@ -128,18 +128,24 @@ async function deleteResaleProperty(id) {
 // Cities operations
 async function getCities() {
   const collection = await getCollection('cities');
-  const cities = await collection.find({}).toArray();
+  const docs = await collection.find({}).toArray();
   
-  // Return default cities if collection is empty
-  if (cities.length === 0) {
-    return [
-      { id: 'gurgaon', name: 'Gurgaon', slug: 'gurgaon' },
-      { id: 'noida', name: 'Noida', slug: 'noida' },
-      { id: 'dubai', name: 'Dubai', slug: 'dubai' }
-    ];
+  // If we have a document with a 'cities' array, return that
+  if (docs.length > 0 && docs[0].cities) {
+    return docs[0].cities;
   }
   
-  return cities;
+  // If collection has individual city documents, return them
+  if (docs.length > 0 && docs[0].id) {
+    return docs;
+  }
+  
+  // Return default cities if collection is empty
+  return [
+    { id: 'gurgaon', name: 'Gurgaon', slug: 'gurgaon' },
+    { id: 'noida', name: 'Noida', slug: 'noida' },
+    { id: 'dubai', name: 'Dubai', slug: 'dubai' }
+  ];
 }
 
 async function updateCities(cities) {

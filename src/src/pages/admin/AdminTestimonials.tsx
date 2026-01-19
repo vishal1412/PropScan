@@ -68,7 +68,7 @@ export default function AdminTestimonials() {
       const testimonialsList = existingData ? JSON.parse(existingData) : [];
       
       const newTestimonial: Testimonial = {
-        id: `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        id: `test_${Date.now()}_${Math.random()?.toString(36).substr(2, 9)}`,
         name: name.trim(),
         city: city.trim(),
         message: message.trim(),

@@ -231,7 +231,7 @@ export default function AdminPanel() {
     const csvContent = [
       headers.join(','),
       ...leads.map(lead => [
-        lead.id.toString(),
+        lead.id?.toString(),
         `"${lead.fullName}"`,
         `"${lead.mobileNumber}"`,
         `"${lead.email}"`,
@@ -616,7 +616,7 @@ export default function AdminPanel() {
                       <div className="space-y-4">
                         {properties && properties.length > 0 ? (
                           properties.map((property) => (
-                            <div key={property.id.toString()} className="border-2 rounded-xl overflow-hidden hover:border-blue-400 transition-colors bg-gradient-to-br from-white to-blue-50/30 shadow-md hover:shadow-xl">
+                            <div key={property.id?.toString()} className="border-2 rounded-xl overflow-hidden hover:border-blue-400 transition-colors bg-gradient-to-br from-white to-blue-50/30 shadow-md hover:shadow-xl">
                               <div className="flex flex-col md:flex-row gap-4">
                                 {/* Property Image */}
                                 <div className="md:w-48 h-48 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center relative overflow-hidden group">
@@ -789,7 +789,7 @@ export default function AdminPanel() {
                   <div className="space-y-4">
                     {testimonials && testimonials.length > 0 ? (
                       testimonials.map((testimonial) => (
-                        <div key={testimonial.id.toString()} className="border-2 rounded-xl p-5 hover:border-green-400 transition-colors bg-gradient-to-r from-white to-green-50/30 shadow-sm hover:shadow-md">
+                        <div key={testimonial.id?.toString()} className="border-2 rounded-xl p-5 hover:border-green-400 transition-colors bg-gradient-to-r from-white to-green-50/30 shadow-sm hover:shadow-md">
                           <div className="flex justify-between items-start gap-4">
                             <div className="flex-1">
                               <h4 className="font-bold text-lg text-slate-900">{testimonial.name}</h4>
@@ -887,7 +887,7 @@ export default function AdminPanel() {
                         </TableHeader>
                         <TableBody>
                           {leads.map((lead) => (
-                            <TableRow key={lead.id.toString()}>
+                            <TableRow key={lead.id?.toString()}>
                               <TableCell className="font-medium">{lead.fullName}</TableCell>
                               <TableCell>{lead.mobileNumber}</TableCell>
                               <TableCell>{lead.email || '-'}</TableCell>

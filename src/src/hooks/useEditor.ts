@@ -76,7 +76,7 @@ function hashDomTreeString(input: string): string {
         hash = ((hash << 5) + hash) ^ input.charCodeAt(i);
     }
 
-    return 'id-' + (hash >>> 0).toString(36).padStart(6, '0');
+    return 'id-' + (hash >>> 0)?.toString(36).padStart(6, '0');
 }
 
 function ensurePositionedForBadge(el: HTMLElement): void {

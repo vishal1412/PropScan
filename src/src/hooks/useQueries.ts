@@ -408,7 +408,7 @@ export function useGetCallerUserProfile() {
   const { identity } = useInternetIdentity();
 
   const query = useQuery<UserProfile | null>({
-    queryKey: ['currentUserProfile', identity?.getPrincipal().toString()],
+    queryKey: ['currentUserProfile', identity?.getPrincipal()?.toString()],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
       if (!identity) return null;
@@ -450,7 +450,7 @@ export function useIsCallerAdmin() {
   const { identity } = useInternetIdentity();
 
   const query = useQuery<boolean>({
-    queryKey: ['isCallerAdmin', identity?.getPrincipal().toString()],
+    queryKey: ['isCallerAdmin', identity?.getPrincipal()?.toString()],
     queryFn: async () => {
       if (!actor) return false;
       if (!identity) return false;

@@ -78,7 +78,7 @@ export default function PropertyListingPage() {
         {allProperties && allProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {allProperties.map((property) => {
-              const propertyId = typeof property.id === 'bigint' ? property.id.toString() : String(property.id);
+              const propertyId = typeof property.id === 'bigint' ? property.id?.toString() : String(property.id);
               const cityName = getCityName(property.citySlug);
               const citySlug = property.citySlug;
 

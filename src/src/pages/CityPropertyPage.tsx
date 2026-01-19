@@ -32,6 +32,7 @@ interface Property {
   paymentPlan: string;
   description: string;
   highlights: string;
+  highlighted?: boolean;
   amenities?: string[];
   rera?: string;
   images: string[];
@@ -277,7 +278,7 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
 
           {selectedProperties.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary" className="text-base px-4 py-2">
+              <Badge className="text-base px-4 py-2">
                 {selectedProperties.length} of 4 selected
               </Badge>
               <Button
@@ -352,11 +353,10 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
                         {selectedProperties.map((property) => (
                           <TableCell key={property.id}>
                             <Badge 
-                              variant={property.projectStatus === 'Ready to Move' ? 'default' : 'secondary'}
                               className={
-                                property.projectStatus === 'Ready to Move' ? 'bg-green-600' : 
-                                property.projectStatus === 'New Launch' ? 'bg-blue-600' : 
-                                'bg-orange-600'
+                                property.projectStatus === 'Ready to Move' ? 'bg-green-600 text-white' : 
+                                property.projectStatus === 'New Launch' ? 'bg-blue-600 text-white' : 
+                                'bg-orange-600 text-white'
                               }
                             >
                               {property.projectStatus || 'N/A'}
@@ -369,8 +369,7 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
                         {selectedProperties.map((property) => (
                           <TableCell key={property.id}>
                             <Badge 
-                              variant="default"
-                              className={property.verifiedStatus === 'Verified' ? 'bg-blue-600' : 'bg-yellow-600'}
+                              className={property.verifiedStatus === 'Verified' ? 'bg-blue-600 text-white' : 'bg-yellow-600 text-white'}
                             >
                               {property.verifiedStatus === 'Verified' ? '✓ Verified' : '⏳ In Progress'}
                             </Badge>
@@ -431,7 +430,7 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
 
               return (
                 <Card
-                  key={property.id.toString()}
+                  key={property.id?.toString()}
                   className={`overflow-hidden hover:shadow-xl transition-all duration-300 relative ${
                     isSelected ? 'ring-2 ring-primary shadow-lg' : ''
                   } ${
@@ -558,12 +557,12 @@ export default function CityPropertyPage({ citySlug }: CityPropertyPageProps) {
                         <span className="text-xs text-gray-500 block mb-2">Amenities</span>
                         <div className="flex flex-wrap gap-2">
                           {property.amenities.slice(0, 5).map((amenity, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
+                            <Badge key={index} className="text-xs bg-secondary text-secondary-foreground">
                               {amenity}
                             </Badge>
                           ))}
                           {property.amenities.length > 5 && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge className="text-xs bg-secondary text-secondary-foreground">
                               +{property.amenities.length - 5} more
                             </Badge>
                           )}

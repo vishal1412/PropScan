@@ -1190,7 +1190,7 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
                     <input
                       type="checkbox"
                       checked={formData.highlighted}
-                      onChange={(e) => handleInputChange('highlighted', e.target.checked.toString())}
+                      onChange={(e) => handleInputChange('highlighted', e.target.checked?.toString())}
                       className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                     />
                     <div>

@@ -515,7 +515,7 @@ export class DataService {
       const response = await fetch(EXTRACT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, projectId })
+        body: JSON.stringify({ websiteUrl: url, projectId })
       });
 
       if (!response.ok) {

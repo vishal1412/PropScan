@@ -1,5 +1,4 @@
-const fs = require('fs').promises;
-const path = require('path');
+const { getProperties, updateProperties } = require('./mongodb-helper');
 
 // Vercel serverless function for properties CRUD
 module.exports = async (req, res) => {
@@ -14,11 +13,9 @@ module.exports = async (req, res) => {
 
   // Extract city and projectId from query parameters
   const { city, id } = req.query;
-  const filePath = path.join(process.cwd(), 'src', 'public', 'data', 'properties.json');
 
   try {
-    const data = await fs.readFile(filePath, 'utf8');
-    const properties = JSON.parse(data);
+    const properties = await getProperties();
 
     // GET - Read properties (all or by city)
     if (req.method === 'GET') {
@@ -43,7 +40,7 @@ module.exports = async (req, res) => {
       
       properties[cityKey].push(newProperty);
       
-      await fs.writeFile(filePath, JSON.stringify(properties, null, 2));
+      await updateProperties(properties);
       return res.json({ success: true, property: newProperty });
     }
 
@@ -67,7 +64,7 @@ module.exports = async (req, res) => {
       
       properties[cityKey][index] = { ...properties[cityKey][index], ...updates };
       
-      await fs.writeFile(filePath, JSON.stringify(properties, null, 2));
+      await updateProperties(properties);
       return res.json({ success: true, property: properties[cityKey][index] });
     }
 
@@ -85,7 +82,7 @@ module.exports = async (req, res) => {
       
       properties[cityKey] = properties[cityKey].filter(p => p.id !== id);
       
-      await fs.writeFile(filePath, JSON.stringify(properties, null, 2));
+      await updateProperties(properties);
       return res.json({ success: true });
     }
 

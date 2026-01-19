@@ -2,6 +2,8 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const cors = require('cors');
+const https = require('https');
+const http = require('http');
 
 const app = express();
 const PORT = 3001;
@@ -209,6 +211,56 @@ app.delete('/api/properties/:city/:id', async (req, res) => {
   }
 });
 
+// ========== PROJECT IMAGES ==========
+// Get all available images for a project from the file system
+app.get('/api/projects/:projectName/images', async (req, res) => {
+  try {
+    const projectName = decodeURIComponent(req.params.projectName);
+    const imagesDir = path.join(__dirname, 'public', 'images', 'projects', projectName);
+    
+    console.log(`📸 Scanning images for project: ${projectName}`);
+    console.log(`📂 Looking in: ${imagesDir}`);
+    
+    // Check if directory exists
+    try {
+      await fs.access(imagesDir);
+    } catch (error) {
+      console.log(`⚠️ No images directory found for ${projectName}`);
+      return res.json({});
+    }
+    
+    const gallery = {};
+    const categories = ['exterior', 'interior', 'amenities', 'location', 'floorplan', 'construction'];
+    
+    for (const category of categories) {
+      const categoryPath = path.join(imagesDir, category);
+      try {
+        await fs.access(categoryPath);
+        const files = await fs.readdir(categoryPath);
+        const imageFiles = files.filter(file => 
+          /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+        );
+        
+        if (imageFiles.length > 0) {
+          gallery[category] = imageFiles.map(file => 
+            `/images/projects/${projectName}/${category}/${file}`
+          );
+          console.log(`  ✓ ${category}: ${imageFiles.length} images`);
+        }
+      } catch (error) {
+        // Category doesn't exist, skip it
+        console.log(`  ○ ${category}: not found`);
+      }
+    }
+    
+    console.log(`✅ Found ${Object.keys(gallery).length} categories with images`);
+    res.json(gallery);
+  } catch (error) {
+    console.error('❌ Error scanning project images:', error);
+    res.status(500).json({ error: 'Failed to scan project images' });
+  }
+});
+
 // ========== CITIES ==========
 app.get('/api/cities', async (req, res) => {
   try {
@@ -254,6 +306,140 @@ app.put('/api/about-us', async (req, res) => {
     res.json(req.body);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update about us' });
+  }
+});
+
+// ========== IMAGE VALIDATION ==========
+// Validate image URLs (both local and external)
+app.post('/api/validate-images', async (req, res) => {
+  try {
+    const { images } = req.body;
+    if (!Array.isArray(images)) {
+      return res.status(400).json({ error: 'Images must be an array' });
+    }
+
+    const results = await Promise.all(images.map(async (imageUrl) => {
+      try {
+        // Check if it's a local path
+        if (imageUrl.startsWith('/images/') || imageUrl.startsWith('./') || imageUrl.startsWith('../')) {
+          const imagePath = path.join(__dirname, 'public', imageUrl.replace(/^\//, ''));
+          try {
+            await fs.access(imagePath);
+            return { url: imageUrl, valid: true, type: 'local' };
+          } catch {
+            return { url: imageUrl, valid: false, type: 'local', error: 'File not found' };
+          }
+        }
+        
+        // Check if it's an external URL
+        if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+          return new Promise((resolve) => {
+            const protocol = imageUrl.startsWith('https://') ? https : http;
+            const timeout = setTimeout(() => {
+              resolve({ url: imageUrl, valid: false, type: 'external', error: 'Timeout' });
+            }, 5000);
+
+            protocol.get(imageUrl, { method: 'HEAD' }, (response) => {
+              clearTimeout(timeout);
+              const valid = response.statusCode >= 200 && response.statusCode < 400;
+              resolve({ 
+                url: imageUrl, 
+                valid, 
+                type: 'external',
+                statusCode: response.statusCode,
+                error: valid ? null : `HTTP ${response.statusCode}`
+              });
+            }).on('error', (error) => {
+              clearTimeout(timeout);
+              resolve({ url: imageUrl, valid: false, type: 'external', error: error.message });
+            });
+          });
+        }
+
+        return { url: imageUrl, valid: false, type: 'unknown', error: 'Invalid URL format' };
+      } catch (error) {
+        return { url: imageUrl, valid: false, error: error.message };
+      }
+    }));
+
+    const summary = {
+      total: results.length,
+      valid: results.filter(r => r.valid).length,
+      invalid: results.filter(r => !r.valid).length,
+      local: results.filter(r => r.type === 'local').length,
+      external: results.filter(r => r.type === 'external').length
+    };
+
+    res.json({ results, summary });
+  } catch (error) {
+    console.error('❌ Error validating images:', error);
+    res.status(500).json({ error: 'Failed to validate images' });
+  }
+});
+
+// ========== RESALE PROPERTIES ==========
+app.get('/api/resale-properties', async (req, res) => {
+  try {
+    const data = await readJsonFile('resale-properties.json');
+    // Filter based on approval status if query param provided
+    const { status } = req.query;
+    if (status) {
+      const filtered = data.filter(p => p.approvalStatus === status);
+      return res.json(filtered);
+    }
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to read resale properties' });
+  }
+});
+
+app.post('/api/resale-properties', async (req, res) => {
+  try {
+    const properties = await readJsonFile('resale-properties.json');
+    const newProperty = {
+      ...req.body,
+      id: `resale_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      submittedAt: new Date().toISOString(),
+      approvalStatus: 'pending', // pending, approved, rejected
+      listingStatus: 'active', // active, sold, on-hold
+    };
+    properties.push(newProperty);
+    await writeJsonFile('resale-properties.json', properties);
+    console.log('✅ Resale property submitted:', newProperty.id);
+    res.json(newProperty);
+  } catch (error) {
+    console.error('❌ Error adding resale property:', error);
+    res.status(500).json({ error: 'Failed to add resale property' });
+  }
+});
+
+app.put('/api/resale-properties/:id', async (req, res) => {
+  try {
+    const properties = await readJsonFile('resale-properties.json');
+    const index = properties.findIndex(p => p.id === req.params.id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Resale property not found' });
+    }
+    properties[index] = { ...properties[index], ...req.body, updatedAt: new Date().toISOString() };
+    await writeJsonFile('resale-properties.json', properties);
+    console.log('✅ Resale property updated:', req.params.id);
+    res.json(properties[index]);
+  } catch (error) {
+    console.error('❌ Error updating resale property:', error);
+    res.status(500).json({ error: 'Failed to update resale property' });
+  }
+});
+
+app.delete('/api/resale-properties/:id', async (req, res) => {
+  try {
+    const properties = await readJsonFile('resale-properties.json');
+    const filtered = properties.filter(p => p.id !== req.params.id);
+    await writeJsonFile('resale-properties.json', filtered);
+    console.log('✅ Resale property deleted:', req.params.id);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Error deleting resale property:', error);
+    res.status(500).json({ error: 'Failed to delete resale property' });
   }
 });
 

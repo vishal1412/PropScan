@@ -54,49 +54,53 @@ export default function GoogleMap({
   useEffect(() => {
     if (!isLoaded || !mapRef.current || !latitude || !longitude) return;
 
-    try {
-      const position = { lat: latitude, lng: longitude };
+    // Small delay to ensure DOM is ready
+    const initMap = setTimeout(() => {
+      if (!mapRef.current) return;
 
-      // Premium map styling - clean, minimal, no clutter
-      const mapStyles = [
-        {
-          featureType: 'poi',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'transit',
-          elementType: 'labels.icon',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{ color: '#f5f5f5' }],
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{ color: '#c9e6f2' }],
-        },
-        {
-          featureType: 'landscape',
-          elementType: 'geometry',
-          stylers: [{ color: '#f8fafc' }],
-        },
-      ];
+      try {
+        const position = { lat: latitude, lng: longitude };
 
-      // Initialize map
-      const map = new window.google.maps.Map(mapRef.current, {
-        center: position,
-        zoom: zoom,
-        styles: mapStyles,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: true,
-        zoomControl: true,
-        gestureHandling: 'cooperative',
-      });
+        // Premium map styling - clean, minimal, no clutter
+        const mapStyles = [
+          {
+            featureType: 'poi',
+            elementType: 'labels',
+            stylers: [{ visibility: 'off' }],
+          },
+          {
+            featureType: 'transit',
+            elementType: 'labels.icon',
+            stylers: [{ visibility: 'off' }],
+          },
+          {
+            featureType: 'road',
+            elementType: 'geometry',
+            stylers: [{ color: '#f5f5f5' }],
+          },
+          {
+            featureType: 'water',
+            elementType: 'geometry',
+            stylers: [{ color: '#c9e6f2' }],
+          },
+          {
+            featureType: 'landscape',
+            elementType: 'geometry',
+            stylers: [{ color: '#f8fafc' }],
+          },
+        ];
+
+        // Initialize map
+        const map = new window.google.maps.Map(mapRef.current, {
+          center: position,
+          zoom: zoom,
+          styles: mapStyles,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: true,
+          zoomControl: true,
+          gestureHandling: 'cooperative',
+        });
 
       // Custom marker icon - luxury blue accent
       const markerIcon = {
@@ -162,6 +166,11 @@ export default function GoogleMap({
       console.error('Error initializing map:', err);
       setError('Failed to initialize map');
     }
+    }, 100); // Small delay to ensure DOM is ready
+
+    return () => {
+      clearTimeout(initMap);
+    };
   }, [isLoaded, latitude, longitude, projectName, locationDescription, zoom]);
 
   if (error) {

@@ -164,10 +164,138 @@
       "id": "prop_1768122776392_pnf8xzgz5",
       "createdAt": "2026-01-11T09:12:56.392Z",
       "landArea": "~8.34 – 8.38 Acres",
-      "numberOfTowers": "4",
+      "numberOfTowers": 4,
       "numberOfFloors": "",
       "brochurePath": "/brochures/1768153796911_Ganga_Nandaka_Brochure.pdf",
-      "highlighted": "true"
+      "highlighted": "true",
+      "officialWebsite": "https://www.gangarealty.com/nandaka/",
+      "overview": "",
+      "detailedAmenities": [],
+      "floorPlans": [
+        {
+          "id": "aebf2b43e09bb131",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/0_769aa887.png",
+          "description": null
+        },
+        {
+          "id": "cc981940339c9f95",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/1_c29d9337.png",
+          "description": null
+        },
+        {
+          "id": "e62e01cd9a31704b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/2_384f0f0d.png",
+          "description": null
+        },
+        {
+          "id": "adfa695e0e09aab4",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/3_358b7704.png",
+          "description": null
+        },
+        {
+          "id": "e2ba2e51142437be",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/4_19a338d7.png",
+          "description": null
+        },
+        {
+          "id": "eca33d41874260fa",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/5_11d225c3.png",
+          "description": null
+        },
+        {
+          "id": "0acd3b4354752d86",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/6_0e6dee74.png",
+          "description": null
+        },
+        {
+          "id": "bff6daeec31036bf",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/7_769aa887.png",
+          "description": null
+        },
+        {
+          "id": "e39e7f843156f274",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/8_c29d9337.png",
+          "description": null
+        },
+        {
+          "id": "c3bda51c3e6cd84e",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/9_384f0f0d.png",
+          "description": null
+        },
+        {
+          "id": "f89d244b83396d30",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/10_358b7704.png",
+          "description": null
+        },
+        {
+          "id": "2d516e07a8a5d01b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/11_19a338d7.png",
+          "description": null
+        },
+        {
+          "id": "dbf5b9b7c5a48775",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/12_11d225c3.png",
+          "description": null
+        },
+        {
+          "id": "8aae0f5de9f2572b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/13_0e6dee74.png",
+          "description": null
+        }
+      ],
+      "constructionUpdates": [],
+      "locationDetails": {
+        "address": "For more details, call +91-9990084084",
+        "microLocation": null,
+        "description": null,
+        "connectivity": null,
+        "nearbyLandmarks": null
+      },
+      "developerInfo": {
+        "name": null,
+        "about": null,
+        "experience": null
+      },
+      "documents": [],
+      "gallery": {
+        "exterior": [
+          "/images/projects/Ganga Nandaka/exterior/12_4c551fa9.jpg",
+          "/images/projects/Ganga Nandaka/exterior/1_57dfa490.jpg",
+          "/images/projects/Ganga Nandaka/exterior/3_21690476.jpg",
+          "/images/projects/Ganga Nandaka/exterior/4_40ff7200.jpg"
+        ],
+        "interior": [
+          "/images/projects/Ganga Nandaka/interior/0_93b3a522.jpg"
+        ],
+        "amenities": [
+          "/images/projects/Ganga Nandaka/amenities/0_508b0013.jpg",
+          "/images/projects/Ganga Nandaka/amenities/1_11b14b46.jpg"
+        ],
+        "location": [
+          "/images/projects/Ganga Nandaka/location/0_896b81b9.webp"
+        ],
+        "construction": [],
+        "floorplan": [
+          "/images/projects/Ganga Nandaka/floorplan/0_769aa887.png",
+          "/images/projects/Ganga Nandaka/floorplan/10_358b7704.png",
+          "/images/projects/Ganga Nandaka/floorplan/12_11d225c3.png",
+          "/images/projects/Ganga Nandaka/floorplan/11_19a338d7.png"
+        ]
+      }
     },
     {
       "name": "Conscient Elaira Residences (Phase 1)",
@@ -181,7 +309,7 @@
       "size": "1,396 sq ft",
       "configuration": "3 BHK, 3.5 BHK",
       "developer": "Conscient Infrastructure Pvt. Ltd.",
-      "delivery": "",
+      "delivery": "Mar 2031",
       "paymentPlan": "",
       "description": "Mid-to-upper segment residential towers designed by Benoy (architectural collaborator cited on developer microsite) offering premium 3/3.5 BHK layouts and clubhouse amenities.",
       "highlights": "RERA-registered.\nDesigned by Benoy (developer site).\nGood connectivity to NH-48 / Dwarka Expressway corridors.",
@@ -196,7 +324,46 @@
       "projectStatus": "Under Construction",
       "verifiedStatus": "In Progress",
       "id": "prop_1768125711705_ququatggs",
-      "createdAt": "2026-01-11T10:01:51.705Z"
+      "createdAt": "2026-01-11T10:01:51.705Z",
+      "landArea": "",
+      "numberOfTowers": "",
+      "numberOfFloors": "",
+      "brochurePath": "",
+      "highlighted": false,
+      "officialWebsite": "https://conscientresidences.in/",
+      "overview": "Welcome To\n                        Conscient Elaira Residences\n                        \n                                        \n                    \n                    \n                         \n                            \n                            \n                                  \n                            \n                             \n                            \n                            \n                                \n         Conscient Elaira Residences in Sector 80, Gurgaon, is a luxury residential project designed\nfor those who seek elegance, comfort, and modern living. Designed by renowned\narchitectural firm Benoy, the project seamlessly blends sophistication with functionality. It\nfeatures spacious and elegant 3 & 4 BHK apartments to accommodate diverse family sizes.\nWith world-class amenities, including a grand 75,000 sq ft clubhouse, an infinity pool, and\ndedicated spaces for yoga and meditation, it offers an unparalleled lifestyle for everyone.\nSurrounded by lush green landscapes and breathtaking views of Aravalli Hills, Conscient \n\nElaira Residences is a perfect retreat that combines nature with contemporary design,\noffering residents a serene yet exceptional living experience in the heart of Gurgaon.\nEscape into the peaceful and sophisticating refuge of Conscient Infrastructure luxury flats in Sector 80 of Gurugram. This is how you come back home which is filled with the unmatched luxury and the best level of comfort.",
+      "detailedAmenities": [],
+      "floorPlans": [],
+      "constructionUpdates": [],
+      "locationDetails": {
+        "address": null,
+        "microLocation": "Home\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t+91 9971997281\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation",
+        "description": "This project is RERA registered. | Authorized Channel Partner | Channel Partner RERA Number : Coming soon | Project RERA Number : Coming Soon.",
+        "connectivity": null,
+        "nearbyLandmarks": null
+      },
+      "developerInfo": {
+        "name": null,
+        "about": null,
+        "experience": null
+      },
+      "documents": [],
+      "gallery": {
+        "exterior": [
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/10_9140c74f.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/11_9fcf941f.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/12_7d66cad3.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/0_d3fab912.webp"
+        ],
+        "interior": [],
+        "amenities": [
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/0_2b2fc0de.webp",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/1_b9ac061a.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/2_35122599.jpg"
+        ],
+        "location": [],
+        "construction": []
+      }
     },
     {
       "name": "Aura 79",

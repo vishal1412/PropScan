@@ -6,7 +6,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
-import { Shield, LogOut, Home, Building2, MessageSquare, Users, Settings as SettingsIcon, ChevronDown, ChevronRight, Bug, Layout, MapPin } from 'lucide-react';
+import { Shield, LogOut, Home, Building2, MessageSquare, Users, Settings as SettingsIcon, ChevronDown, ChevronRight, Bug, Layout, MapPin, TrendingUp } from 'lucide-react';
 import { DataService } from '../services/dataService';
 
 // Import admin module components - verified paths
@@ -17,6 +17,7 @@ import AdminLeads from './admin/AdminLeads';
 import AdminSettings from './admin/AdminSettings';
 import LandingPageEditor from './admin/LandingPageEditor';
 import CityPagesEditor from './admin/CityPagesEditor';
+import AdminResaleListings from './admin/AdminResaleListings';
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function AdminPanel() {
   const [loginPassword, setLoginPassword] = useState('');
   
   // Navigation state
-  const [activeModule, setActiveModule] = useState<'dashboard' | 'city-projects' | 'testimonials' | 'leads' | 'landing-page' | 'city-pages' | 'settings'>('dashboard');
+  const [activeModule, setActiveModule] = useState<'dashboard' | 'city-projects' | 'testimonials' | 'leads' | 'resale-listings' | 'landing-page' | 'city-pages' | 'settings'>('dashboard');
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [cityProjectsExpanded, setCityProjectsExpanded] = useState(true);
   const [showDebug, setShowDebug] = useState(true);
@@ -234,6 +235,19 @@ export default function AdminPanel() {
               <span className="font-medium">Leads</span>
             </button>
 
+            {/* Resale Listings */}
+            <button
+              onClick={() => handleModuleChange('resale-listings')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                activeModule === 'resale-listings'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+              }`}
+            >
+              <TrendingUp className="h-5 w-5" />
+              <span className="font-medium">Resale Properties</span>
+            </button>
+
             {/* Landing Page Editor */}
             <button
               onClick={() => handleModuleChange('landing-page')}
@@ -339,6 +353,7 @@ export default function AdminPanel() {
         {activeModule === 'city-projects' && <CityProjects selectedCity={selectedCity} />}
         {activeModule === 'testimonials' && <AdminTestimonials />}
         {activeModule === 'leads' && <AdminLeads />}
+        {activeModule === 'resale-listings' && <AdminResaleListings />}
         {activeModule === 'landing-page' && <LandingPageEditor />}
         {activeModule === 'city-pages' && <CityPagesEditor />}
         {activeModule === 'settings' && <AdminSettings />}

@@ -7,7 +7,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
 import { AlertCircle, Plus, Edit, Trash2, X, Upload } from 'lucide-react';
 import { toast } from 'sonner';
-import { DataService, type Project } from '../../services/dataService';
+import { DataService, type Project, type ProjectGallery } from '../../services/dataService';
 
 interface CityProjectsProps {
   selectedCity: string | null;
@@ -107,6 +107,10 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
   const [amenityInput, setAmenityInput] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingBrochure, setUploadingBrochure] = useState(false);
+  const [availableImages, setAvailableImages] = useState<ProjectGallery>({});
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [validatingImages, setValidatingImages] = useState(false);
+  const [imageValidation, setImageValidation] = useState<any>(null);
 
   // Load projects when city changes
   const loadProjects = useCallback(async () => {
@@ -200,10 +204,24 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
 
       if (editingProject) {
         // UPDATE existing project
-        success = await DataService.updateProperty(selectedCity, editingProject.id, formData);
+        const updateData = {
+          ...formData,
+          latitude: formData.latitude ? parseFloat(formData.latitude) : undefined,
+          longitude: formData.longitude ? parseFloat(formData.longitude) : undefined,
+          numberOfTowers: formData.numberOfTowers ? parseInt(formData.numberOfTowers) : undefined,
+          numberOfFloors: formData.numberOfFloors ? parseInt(formData.numberOfFloors) : undefined,
+        };
+        success = await DataService.updateProperty(selectedCity, editingProject.id, updateData as any);
       } else {
         // ADD new project
-        success = await DataService.addProperty(selectedCity, formData);
+        const newProjectData = {
+          ...formData,
+          latitude: formData.latitude ? parseFloat(formData.latitude) : undefined,
+          longitude: formData.longitude ? parseFloat(formData.longitude) : undefined,
+          numberOfTowers: formData.numberOfTowers ? parseInt(formData.numberOfTowers) : undefined,
+          numberOfFloors: formData.numberOfFloors ? parseInt(formData.numberOfFloors) : undefined,
+        };
+        success = await DataService.addProperty(selectedCity, newProjectData as any);
       }
 
       if (success) {
@@ -262,7 +280,122 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
       gallery: (project as any).gallery || null,
     });
     setShowAddForm(true);
+    // Load available images for this project
+    loadAvailableImages(project.name);
   }, []);
+
+  // Load available images from file system
+  const loadAvailableImages = useCallback(async (projectName: string) => {
+    if (!projectName) return;
+    
+    setLoadingImages(true);
+    try {
+      const images = await DataService.getProjectImages(projectName);
+      setAvailableImages(images);
+      console.log('📸 Loaded available images:', images);
+      console.log('📸 Current gallery selections:', formData.gallery);
+    } catch (error) {
+      console.error('Error loading images:', error);
+      toast.error('Failed to load available images');
+      setAvailableImages({});
+    } finally {
+      setLoadingImages(false);
+    }
+  }, []);
+
+  // Toggle image selection in gallery
+  const handleToggleImageInGallery = useCallback((category: string, imagePath: string) => {
+    setFormData(prev => {
+      const currentGallery = prev.gallery || {};
+      const categoryImages = currentGallery[category as keyof typeof currentGallery] || [];
+      
+      let updatedCategoryImages: string[];
+      if (categoryImages.includes(imagePath)) {
+        // Remove image
+        updatedCategoryImages = categoryImages.filter((img: string) => img !== imagePath);
+      } else {
+        // Add image
+        updatedCategoryImages = [...categoryImages, imagePath];
+      }
+      
+      return {
+        ...prev,
+        gallery: {
+          ...currentGallery,
+          [category]: updatedCategoryImages
+        }
+      };
+    });
+  }, []);
+
+  // Select all images in a category
+  const handleSelectAllInCategory = useCallback((category: string) => {
+    const categoryImages = availableImages[category] || [];
+    setFormData(prev => ({
+      ...prev,
+      gallery: {
+        ...(prev.gallery || {}),
+        [category]: categoryImages
+      }
+    }));
+  }, [availableImages]);
+
+  // Deselect all images in a category
+  const handleDeselectAllInCategory = useCallback((category: string) => {
+    setFormData(prev => ({
+      ...prev,
+      gallery: {
+        ...(prev.gallery || {}),
+        [category]: []
+      }
+    }));
+  }, []);
+
+  // Validate all images in the project
+  const handleValidateImages = useCallback(async () => {
+    const allImages = formData.images || [];
+    
+    if (allImages.length === 0) {
+      toast.error('No images to validate');
+      return;
+    }
+
+    setValidatingImages(true);
+    setImageValidation(null);
+    
+    try {
+      const result = await DataService.validateImages(allImages);
+      setImageValidation(result);
+      
+      if (result.summary.invalid > 0) {
+        toast.warning(`Found ${result.summary.invalid} broken image(s)`);
+      } else {
+        toast.success(`All ${result.summary.valid} images are valid!`);
+      }
+    } catch (error) {
+      console.error('Error validating images:', error);
+      toast.error('Failed to validate images');
+    } finally {
+      setValidatingImages(false);
+    }
+  }, [formData.images]);
+
+  // Remove broken images
+  const handleRemoveBrokenImages = useCallback(() => {
+    if (!imageValidation) return;
+    
+    const validImages = imageValidation.results
+      .filter((r: any) => r.valid)
+      .map((r: any) => r.url);
+    
+    setFormData(prev => ({
+      ...prev,
+      images: validImages
+    }));
+    
+    setImageValidation(null);
+    toast.success(`Removed ${imageValidation.summary.invalid} broken image(s)`);
+  }, [imageValidation]);
 
   const extractAndMergeContent = useCallback(async () => {
     if (!formData.officialWebsite) {
@@ -835,22 +968,199 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
                 </div>
 
                 {formData.images.length > 0 && (
-                  <div className="grid grid-cols-3 gap-4">
-                    {formData.images.map((url, index) => (
-                      <div key={index} className="relative group">
-                        <img src={url} alt="" className="w-full h-24 object-cover rounded border" />
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImage(index)}
-                          className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid grid-cols-3 gap-4">
+                      {formData.images.map((url, index) => (
+                        <div key={index} className="relative group">
+                          <img src={url} alt="" className="w-full h-24 object-cover rounded border" />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Image Validation */}
+                    <div className="pt-4 border-t">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleValidateImages}
+                        disabled={validatingImages}
+                        className="w-full"
+                      >
+                        {validatingImages ? '🔄 Validating...' : '✓ Validate All Images'}
+                      </Button>
+
+                      {imageValidation && (
+                        <div className="mt-4 space-y-3">
+                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded border">
+                            <div className="text-sm">
+                              <span className="font-medium">Validation Results:</span>
+                              <span className="ml-2 text-green-600">{imageValidation.summary.valid} valid</span>
+                              {imageValidation.summary.invalid > 0 && (
+                                <span className="ml-2 text-red-600">{imageValidation.summary.invalid} broken</span>
+                              )}
+                            </div>
+                            {imageValidation.summary.invalid > 0 && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="destructive"
+                                onClick={handleRemoveBrokenImages}
+                              >
+                                Remove Broken
+                              </Button>
+                            )}
+                          </div>
+
+                          {imageValidation.results.some((r: any) => !r.valid) && (
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium text-red-600">Broken Images:</p>
+                              {imageValidation.results
+                                .filter((r: any) => !r.valid)
+                                .map((result: any, idx: number) => (
+                                  <div key={idx} className="text-xs p-2 bg-red-50 rounded border border-red-200">
+                                    <p className="font-mono truncate text-red-800">{result.url}</p>
+                                    <p className="text-red-600 mt-1">Error: {result.error}</p>
+                                  </div>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
+
+              {/* Image Gallery Selector - Select which images to show on detail page */}
+              {editingProject && Object.keys(availableImages).length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg text-slate-900 pb-2 border-b">
+                    Project Gallery - Select Images for Detail Page
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    Select which images should be displayed on the project detail page. Images are organized by category.
+                  </p>
+
+                  {loadingImages ? (
+                    <div className="p-8 text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                      <p className="text-slate-600 mt-2">Loading images...</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {Object.entries(availableImages).map(([category, images]) => {
+                        if (!images || images.length === 0) return null;
+                        
+                        const selectedImages = (formData.gallery?.[category as keyof typeof formData.gallery] || []) as string[];
+                        const allSelected = images.length > 0 && selectedImages.length === images.length;
+                        
+                        return (
+                          <div key={category} className="border rounded-lg p-4 bg-slate-50">
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="font-semibold text-slate-900 capitalize flex items-center gap-2">
+                                {category}
+                                <span className="text-sm font-normal text-slate-600">
+                                  ({selectedImages.length}/{images.length} selected)
+                                </span>
+                              </h4>
+                              <div className="flex gap-2">
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleSelectAllInCategory(category)}
+                                  disabled={allSelected}
+                                >
+                                  Select All
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleDeselectAllInCategory(category)}
+                                  disabled={selectedImages.length === 0}
+                                >
+                                  Deselect All
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-4 gap-3">
+                              {images.map((imagePath) => {
+                                const isSelected = selectedImages.includes(imagePath);
+                                
+                                return (
+                                  <div
+                                    key={imagePath}
+                                    className={`relative group cursor-pointer border-2 rounded-lg overflow-hidden transition-all ${
+                                      isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-slate-300 hover:border-slate-400'
+                                    }`}
+                                    onClick={() => handleToggleImageInGallery(category, imagePath)}
+                                  >
+                                    <img
+                                      src={imagePath}
+                                      alt=""
+                                      className="w-full h-24 object-cover"
+                                    />
+                                    <div className={`absolute inset-0 flex items-center justify-center ${
+                                      isSelected ? 'bg-blue-500/20' : 'bg-black/0 group-hover:bg-black/10'
+                                    }`}>
+                                      {isSelected && (
+                                        <div className="bg-blue-500 text-white rounded-full p-1">
+                                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                          </svg>
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs p-1 truncate">
+                                      {imagePath.split('/').pop()}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {Object.keys(availableImages).length === 0 && !loadingImages && (
+                    <div className="text-center py-8 text-slate-500">
+                      <p>No images found for this project.</p>
+                      <p className="text-sm mt-2">
+                        Images should be placed in: <code className="bg-slate-200 px-2 py-1 rounded">/public/images/projects/{formData.name}/</code>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Load Images Button for new projects or when name changes */}
+              {formData.name && !editingProject && (
+                <div className="space-y-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => loadAvailableImages(formData.name)}
+                    disabled={loadingImages}
+                    className="w-full"
+                  >
+                    {loadingImages ? 'Loading...' : '🔍 Load Available Images'}
+                  </Button>
+                  <p className="text-xs text-slate-500 text-center">
+                    Click to scan for images in /public/images/projects/{formData.name}/
+                  </p>
+                </div>
+              )}
 
               {/* Status */}
               <div className="space-y-4">

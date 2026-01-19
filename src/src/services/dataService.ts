@@ -109,6 +109,8 @@ interface ProjectGallery {
   amenities?: string[];
   location?: string[];
   construction?: string[];
+  floorplan?: string[];
+  [category: string]: string[] | undefined;
 }
 
 interface PropertiesData {
@@ -135,6 +137,57 @@ interface Lead {
   purpose?: string;
   message?: string;
   timestamp: string;
+  source?: string; // Track lead source (e.g., 'resale-property-listing', 'contact-form')
+}
+
+interface ResaleProperty {
+  id: string;
+  // Seller Information
+  sellerName: string;
+  sellerPhone: string;
+  sellerEmail: string;
+  sellerType: 'Owner' | 'Investor'; // Property held by owner or investor
+  
+  // Property Details
+  propertyType: 'Apartment' | 'Villa' | 'Plot' | 'Commercial' | 'Office Space' | 'Retail Shop' | 'Other';
+  bhk?: string; // e.g., "3 BHK", "4 BHK" (for residential)
+  area: string; // e.g., "1850 sq ft"
+  city: string;
+  locality: string; // Specific area/sector
+  address?: string; // Optional full address
+  projectName?: string; // If part of a project (e.g., "DLF Phase 3")
+  
+  // Pricing
+  price: string; // Asking price
+  priceNegotiable: boolean;
+  
+  // Property Status
+  possession: 'Ready to Move' | 'Under Construction';
+  furnished: 'Furnished' | 'Semi-Furnished' | 'Unfurnished';
+  ageOfProperty?: string; // e.g., "1-3 years", "3-5 years", "New"
+  floorNumber?: string; // e.g., "10th Floor", "Ground Floor"
+  totalFloors?: string; // Total floors in building
+  
+  // Property Features
+  facing?: string; // e.g., "North", "East", "West", "South"
+  parking?: number; // Number of parking spots
+  balconies?: number;
+  bathrooms?: number;
+  
+  // Images
+  images: string[]; // Property images uploaded by seller
+  
+  // Description
+  description: string;
+  keyHighlights?: string[]; // e.g., ["Prime location", "Park view", "Vastu compliant"]
+  
+  // Metadata
+  submittedAt: string;
+  updatedAt?: string;
+  approvalStatus: 'pending' | 'approved' | 'rejected';
+  listingStatus: 'active' | 'sold' | 'on-hold';
+  adminNotes?: string; // Internal notes for admin
+  rejectionReason?: string; // If rejected, reason why
 }
 
 export class DataService {
@@ -455,8 +508,15 @@ export class DataService {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.details || 'Extraction failed');
+        let errorMessage = 'Extraction failed';
+        try {
+          const error = await response.json();
+          errorMessage = error.details || error.error || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
@@ -464,7 +524,57 @@ export class DataService {
       return result.data;
     } catch (error: any) {
       console.error('[Extract] Error:', error);
+      
+      // Check if it's a network error
+      if (error.message.includes('fetch') || error.message.includes('NetworkError')) {
+        throw new Error('Cannot connect to extraction service. Make sure the API server is running on http://localhost:3001');
+      }
+      
       throw new Error(error.message || 'Failed to extract content from website');
+    }
+  }
+
+  // Get available images for a project from file system
+  static async getProjectImages(projectName: string): Promise<ProjectGallery> {
+    if (isGitHubPages) {
+      console.warn('⚠️ Cannot scan images on GitHub Pages - read-only mode');
+      return {};
+    }
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/projects/${encodeURIComponent(projectName)}/images`);
+      if (!response.ok) {
+        throw new Error(`Failed to load images: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error loading project images:', error);
+      return {};
+    }
+  }
+
+  // Validate image URLs (both local and external)
+  static async validateImages(imageUrls: string[]): Promise<any> {
+    if (isGitHubPages) {
+      console.warn('⚠️ Cannot validate images on GitHub Pages - read-only mode');
+      return { results: [], summary: { total: 0, valid: 0, invalid: 0, local: 0, external: 0 } };
+    }
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/validate-images`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ images: imageUrls }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to validate images: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error validating images:', error);
+      return { results: [], summary: { total: 0, valid: 0, invalid: 0, local: 0, external: 0 } };
     }
   }
 
@@ -479,6 +589,91 @@ export class DataService {
         : 'Data is stored in /public/data/*.json files',
     };
   }
+
+  // ========== RESALE PROPERTIES ==========
+  
+  // Load all resale properties (optionally filter by status)
+  static async loadResaleProperties(status?: 'pending' | 'approved' | 'rejected'): Promise<ResaleProperty[]> {
+    try {
+      if (isGitHubPages) {
+        const allProperties = await this.apiCall<ResaleProperty[]>(`${BASE_PATH}/data/resale-properties.json`);
+        if (status) {
+          return allProperties.filter(p => p.approvalStatus === status);
+        }
+        return allProperties;
+      }
+      
+      const url = status 
+        ? `${API_BASE_URL}/resale-properties?status=${status}`
+        : `${API_BASE_URL}/resale-properties`;
+      return await this.apiCall<ResaleProperty[]>(url);
+    } catch (error) {
+      console.error('Error loading resale properties:', error);
+      return [];
+    }
+  }
+
+  // Submit a new resale property listing (customer-facing)
+  static async submitResaleProperty(property: Omit<ResaleProperty, 'id' | 'submittedAt' | 'approvalStatus' | 'listingStatus'>): Promise<boolean> {
+    if (isGitHubPages) {
+      console.warn('⚠️ Cannot submit property on GitHub Pages - read-only mode');
+      return false;
+    }
+    
+    try {
+      await this.apiCall(`${API_BASE_URL}/resale-properties`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(property),
+      });
+      console.log('✅ Resale property submitted for approval');
+      return true;
+    } catch (error) {
+      console.error('❌ Error submitting resale property:', error);
+      return false;
+    }
+  }
+
+  // Update resale property (admin)
+  static async updateResaleProperty(id: string, updates: Partial<ResaleProperty>): Promise<boolean> {
+    if (isGitHubPages) {
+      console.warn('⚠️ Cannot update property on GitHub Pages - read-only mode');
+      return false;
+    }
+    
+    try {
+      await this.apiCall(`${API_BASE_URL}/resale-properties/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+      console.log('✅ Resale property updated');
+      return true;
+    } catch (error) {
+      console.error('❌ Error updating resale property:', error);
+      return false;
+    }
+  }
+
+  // Delete resale property (admin)
+  static async deleteResaleProperty(id: string): Promise<boolean> {
+    if (isGitHubPages) {
+      console.warn('⚠️ Cannot delete property on GitHub Pages - read-only mode');
+      return false;
+    }
+    
+    try {
+      await this.apiCall(`${API_BASE_URL}/resale-properties/${id}`, {
+        method: 'DELETE',
+      });
+      console.log('✅ Resale property deleted');
+      return true;
+    } catch (error) {
+      console.error('❌ Error deleting resale property:', error);
+      return false;
+    }
+  }
 }
 
-export type { Project, PropertiesData, Testimonial, Lead };
+export type { Project, PropertiesData, Testimonial, Lead, ProjectGallery, ResaleProperty };
+

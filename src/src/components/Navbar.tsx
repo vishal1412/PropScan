@@ -57,6 +57,13 @@ export default function Navbar() {
             </button>
 
             <button
+              onClick={() => navigate({ to: '/resale-properties' })}
+              className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors"
+            >
+              Resale Properties
+            </button>
+
+            <button
               onClick={() => scrollToSection('contact')}
               className="text-slate-600 hover:text-blue-600 font-medium text-sm transition-colors"
             >
@@ -97,6 +104,16 @@ export default function Navbar() {
               className="block w-full text-left py-3 text-slate-700 hover:text-blue-600 font-medium transition-colors"
             >
               How It Works
+            </button>
+
+            <button
+              onClick={() => {
+                navigate({ to: '/resale-properties' });
+                setIsMobileMenuOpen(false);
+              }}
+              className="block w-full text-left py-3 text-slate-700 hover:text-blue-600 font-medium transition-colors"
+            >
+              Resale Properties
             </button>
 
             <button

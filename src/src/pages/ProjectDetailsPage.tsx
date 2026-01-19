@@ -18,6 +18,16 @@ export default function ProjectDetailsPage() {
   const [lightboxImage, setLightboxImage] = useState('');
   const [activeSection, setActiveSection] = useState('overview');
 
+  // Helper to add base path to image URLs
+  const getImageUrl = (url: string) => {
+    if (!url) return url;
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+      return url; // External URL or data URI, use as-is
+    }
+    // For local paths, add the base path
+    return `/PropScan${url.startsWith('/') ? '' : '/'}${url}`;
+  };
+
   // Load project data
   useEffect(() => {
     async function loadProject() {
@@ -50,7 +60,7 @@ export default function ProjectDetailsPage() {
   // Scroll spy for sticky nav
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['overview', 'snapshot', 'highlights', 'plans', 'amenities', 'floor-plans', 'construction-updates', 'location', 'contact'];
+      const sections = ['overview', 'snapshot', 'highlights', 'plans', 'amenities', 'floor-plans', 'gallery', 'construction-updates', 'location', 'contact'];
       const scrollPosition = window.scrollY + 200;
 
       for (const sectionId of sections) {
@@ -257,6 +267,7 @@ export default function ProjectDetailsPage() {
               { id: 'plans', label: 'Plans' },
               { id: 'amenities', label: 'Amenities' },
               ...(project.floorPlans && project.floorPlans.length > 0 ? [{ id: 'floor-plans', label: 'Floor Plans' }] : []),
+              ...(project.gallery && Object.values(project.gallery).some((arr: any) => arr.length > 0) ? [{ id: 'gallery', label: 'Gallery' }] : []),
               ...(project.constructionUpdates && project.constructionUpdates.length > 0 ? [{ id: 'construction-updates', label: 'Progress' }] : []),
               { id: 'location', label: 'Location' },
               { id: 'contact', label: 'Contact' },
@@ -529,38 +540,150 @@ export default function ProjectDetailsPage() {
         </section>
       )}
 
-      {/* FLOOR PLANS SECTION - If available from extraction */}
-      {project.floorPlans && project.floorPlans.length > 0 && (
-        <section id="floor-plans" className="py-24 bg-white scroll-mt-24">
+      {/* GALLERY SECTION - Project Images by Category */}
+      {project.gallery && Object.values(project.gallery).some((arr: any) => arr && arr.length > 0) && (
+        <section id="gallery" className="py-24 bg-white scroll-mt-24">
           <div className="container mx-auto px-6 lg:px-16">
             <div className="max-w-6xl mx-auto">
               <h2 className="font-serif text-2xl font-medium text-slate-900 mb-12 text-center tracking-tight">
-                Floor Plans
+                Project Gallery
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {project.floorPlans.map((plan) => (
-                  <div key={plan.id} className="bg-slate-50/50 rounded-lg overflow-hidden border border-slate-200 hover:shadow-md transition-all">
-                    <div className="aspect-[4/3] bg-slate-100 relative">
-                      <img 
-                        src={plan.image} 
-                        alt={plan.title}
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk0YTNiOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkZsb29yIFBsYW48L3RleHQ+PC9zdmc+';
-                        }}
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-lg font-medium text-slate-900 mb-2">{plan.title}</h3>
-                      {plan.size && (
-                        <p className="text-sm text-slate-600 mb-2">Size: {plan.size}</p>
-                      )}
-                      {plan.description && (
-                        <p className="text-sm text-slate-700 leading-relaxed">{plan.description}</p>
-                      )}
+              
+              <div className="space-y-16">
+                {/* Exterior Images */}
+                {project.gallery.exterior && project.gallery.exterior.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Exterior Views</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.exterior.map((img: string, idx: number) => (
+                        <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} exterior ${idx + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              console.error('❌ Failed to load image:', img);
+                              (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk0YTNiOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4=';
+                            }}
+                            onLoad={() => console.log('✅ Loaded image:', img)}
+                          />
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                )}
+
+                {/* Interior Images */}
+                {project.gallery.interior && project.gallery.interior.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Interior Spaces</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.interior.map((img: string, idx: number) => (
+                        <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} interior ${idx + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Amenities Images */}
+                {project.gallery.amenities && project.gallery.amenities.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Amenities</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.amenities.map((img: string, idx: number) => (
+                        <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} amenity ${idx + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Location Images */}
+                {project.gallery.location && project.gallery.location.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Location & Surroundings</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.location.map((img: string, idx: number) => (
+                        <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} location ${idx + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Construction Images */}
+                {project.gallery.construction && project.gallery.construction.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Construction Updates</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.construction.map((img: string, idx: number) => (
+                        <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} construction ${idx + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Floor Plan Images from Gallery */}
+                {project.gallery.floorplan && project.gallery.floorplan.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-6">Floor Plans</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {project.gallery.floorplan.map((img: string, idx: number) => (
+                        <div 
+                          key={idx} 
+                          className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                          onClick={() => {
+                            setLightboxImage(getImageUrl(img));
+                            setShowLightbox(true);
+                          }}
+                        >
+                          <img 
+                            src={getImageUrl(img)} 
+                            alt={`${project.name} floor plan ${idx + 1}`}
+                            className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -683,6 +806,27 @@ export default function ProjectDetailsPage() {
                   Experience the perfect balance of accessibility and tranquility, with seamless connections to key destinations while enjoying the peace of a thoughtfully planned residential environment.
                 </p>
               </div>
+
+              {/* Location Images from Gallery */}
+              {project.gallery?.location && project.gallery.location.length > 0 && (
+                <div className="mt-8 pt-8 border-t border-slate-200">
+                  <h4 className="text-base font-medium text-slate-900 mb-4">Location Views</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {project.gallery.location.slice(0, 6).map((img: string, idx: number) => (
+                      <div key={idx} className="aspect-[4/3] bg-slate-100 rounded-lg overflow-hidden">
+                        <img 
+                          src={img} 
+                          alt={`Location view ${idx + 1}`}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

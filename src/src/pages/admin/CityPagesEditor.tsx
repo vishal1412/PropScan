@@ -257,13 +257,15 @@ export default function CityPagesEditor() {
 
         {/* Tabs for different cities */}
         <Tabs defaultValue={cities[0]?.slug} className="space-y-6">
-          <TabsList className={`grid w-full h-auto p-1 bg-white shadow-md`} style={{ gridTemplateColumns: `repeat(${cities.length}, 1fr)` }}>
-            {cities.map((city) => (
-              <TabsTrigger key={city.id} value={city.slug} className="py-3">
-                {city.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div style={{ gridTemplateColumns: `repeat(${cities.length}, 1fr)` }}>
+            <TabsList className="grid w-full h-auto p-1 bg-white shadow-md">
+              {cities.map((city) => (
+                <TabsTrigger key={city.id} value={city.slug} className="py-3">
+                  {city.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           {cities.map((city) => (
             <TabsContent key={city.id} value={city.slug}>

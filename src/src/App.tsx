@@ -5,6 +5,9 @@ import HomePage from './pages/HomePage';
 import AdminPanel from './pages/AdminPanel';
 import CityPropertyPage from './pages/CityPropertyPage';
 import ProjectDetailsPage from './pages/ProjectDetailsPage';
+import ResalePropertiesPage from './pages/ResalePropertiesPage';
+import ListPropertyForm from './pages/ListPropertyForm';
+import ResalePropertyDetail from './pages/ResalePropertyDetail';
 import { Toaster } from './components/ui/sonner';
 import { ThemeProvider } from 'next-themes';
 import { Alert, AlertDescription, AlertTitle } from './components/ui/alert';
@@ -118,6 +121,24 @@ const projectDetailsRoute = createRoute({
   component: ProjectDetailsPage,
 });
 
+const resalePropertiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/resale-properties',
+  component: ResalePropertiesPage,
+});
+
+const listPropertyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/list-property',
+  component: ListPropertyForm,
+});
+
+const resalePropertyDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/resale-property/$id',
+  component: ResalePropertyDetail,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   adminRoute,
@@ -125,6 +146,9 @@ const routeTree = rootRoute.addChildren([
   noidaRoute,
   dubaiRoute,
   projectDetailsRoute,
+  resalePropertiesRoute,
+  listPropertyRoute,
+  resalePropertyDetailRoute,
 ]);
 
 const router = createRouter({ 

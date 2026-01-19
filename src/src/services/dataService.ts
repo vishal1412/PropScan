@@ -372,9 +372,6 @@ export class DataService {
   // CITIES (keep static for now)
   static async loadCities(): Promise<Array<{ id: string; name: string; slug: string }>> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall(`${BASE_PATH}/data/cities.json`);
-      }
       return await this.apiCall(`${API_BASE_URL}/cities`);
     } catch (error) {
       console.error('Error loading cities:', error);
@@ -385,9 +382,6 @@ export class DataService {
   // HERO SECTION
   static async getHeroSection(): Promise<{ headline: string; subheadline: string }> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall(`${BASE_PATH}/data/heroSection.json`);
-      }
       return await this.apiCall(`${API_BASE_URL}/hero-section`);
     } catch (error) {
       console.error('Error loading hero section:', error);
@@ -416,9 +410,6 @@ export class DataService {
   // ABOUT US
   static async getAboutUs(): Promise<{ content: string }> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall(`${BASE_PATH}/data/aboutUs.json`);
-      }
       return await this.apiCall(`${API_BASE_URL}/about-us`);
     } catch (error) {
       console.error('Error loading about us:', error);

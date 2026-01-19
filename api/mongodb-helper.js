@@ -125,6 +125,69 @@ async function deleteResaleProperty(id) {
   await collection.deleteOne({ id });
 }
 
+// Cities operations
+async function getCities() {
+  const collection = await getCollection('cities');
+  const cities = await collection.find({}).toArray();
+  return cities.length > 0 ? cities : [];
+}
+
+async function updateCities(cities) {
+  const collection = await getCollection('cities');
+  // Clear existing and insert new
+  await collection.deleteMany({});
+  if (cities.length > 0) {
+    await collection.insertMany(cities);
+  }
+}
+
+// Hero Section operations
+async function getHeroSection() {
+  const collection = await getCollection('hero-section');
+  const docs = await collection.find({}).toArray();
+  
+  if (docs.length === 0) {
+    return {
+      headline: 'Your Trusted Property Intelligence Partner',
+      subheadline: 'Compare, Discover, and Invest in Gurgaon, Noida & Dubai with Confidence'
+    };
+  }
+  
+  return docs[0];
+}
+
+async function updateHeroSection(data) {
+  const collection = await getCollection('hero-section');
+  await collection.updateOne(
+    {},
+    { $set: data },
+    { upsert: true }
+  );
+}
+
+// About Us operations
+async function getAboutUs() {
+  const collection = await getCollection('about-us');
+  const docs = await collection.find({}).toArray();
+  
+  if (docs.length === 0) {
+    return {
+      content: 'PropScan Intelligence is committed to providing transparent, data-driven real estate advisory services.'
+    };
+  }
+  
+  return docs[0];
+}
+
+async function updateAboutUs(data) {
+  const collection = await getCollection('about-us');
+  await collection.updateOne(
+    {},
+    { $set: data },
+    { upsert: true }
+  );
+}
+
 module.exports = {
   connectToDatabase,
   getCollection,
@@ -141,4 +204,10 @@ module.exports = {
   addResaleProperty,
   updateResaleProperty,
   deleteResaleProperty,
+  getCities,
+  updateCities,
+  getHeroSection,
+  updateHeroSection,
+  getAboutUs,
+  updateAboutUs,
 };

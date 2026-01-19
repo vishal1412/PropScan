@@ -243,10 +243,6 @@ export class DataService {
   }
 
   static async addProperty(city: string, project: Omit<Project, 'id' | 'createdAt'>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot add properties on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}`, {
         method: 'POST',
@@ -262,10 +258,6 @@ export class DataService {
   }
 
   static async updateProperty(city: string, projectId: string, updates: Partial<Project>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot update properties on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}/${projectId}`, {
         method: 'PUT',
@@ -281,10 +273,6 @@ export class DataService {
   }
 
   static async deleteProperty(city: string, projectId: string): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot delete properties on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}/${projectId}`, {
         method: 'DELETE',
@@ -311,10 +299,6 @@ export class DataService {
   }
 
   static async addTestimonial(testimonial: Omit<Testimonial, 'id' | 'createdAt'>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot add testimonials on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/testimonials`, {
         method: 'POST',
@@ -330,10 +314,6 @@ export class DataService {
   }
 
   static async updateTestimonial(id: string, updates: Partial<Testimonial>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot update testimonials on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/testimonials/${id}`, {
         method: 'PUT',
@@ -349,10 +329,6 @@ export class DataService {
   }
 
   static async deleteTestimonial(id: string): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot delete testimonials on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/testimonials/${id}`, {
         method: 'DELETE',
@@ -379,10 +355,6 @@ export class DataService {
   }
 
   static async addLead(lead: Omit<Lead, 'id' | 'timestamp'>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot add leads on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/leads`, {
         method: 'POST',
@@ -398,10 +370,6 @@ export class DataService {
   }
 
   static async deleteLead(id: string): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot delete leads on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/leads/${id}`, {
         method: 'DELETE',
@@ -444,10 +412,6 @@ export class DataService {
   }
 
   static async updateHeroSection(data: { headline: string; subheadline: string }): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot update hero section on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/hero-section`, {
         method: 'PUT',
@@ -478,10 +442,6 @@ export class DataService {
   }
 
   static async updateAboutUs(data: { content: string }): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot update about us on GitHub Pages - read-only mode');
-      return false;
-    }
     try {
       await this.apiCall(`${API_BASE_URL}/about-us`, {
         method: 'PUT',
@@ -626,11 +586,6 @@ export class DataService {
 
   // Submit a new resale property listing (customer-facing)
   static async submitResaleProperty(property: Omit<ResaleProperty, 'id' | 'submittedAt' | 'approvalStatus' | 'listingStatus'>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot submit property on GitHub Pages - read-only mode');
-      return false;
-    }
-    
     try {
       await this.apiCall(`${API_BASE_URL}/resale-properties`, {
         method: 'POST',
@@ -647,11 +602,6 @@ export class DataService {
 
   // Update resale property (admin)
   static async updateResaleProperty(id: string, updates: Partial<ResaleProperty>): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot update property on GitHub Pages - read-only mode');
-      return false;
-    }
-    
     try {
       await this.apiCall(`${API_BASE_URL}/resale-properties/${id}`, {
         method: 'PUT',
@@ -668,11 +618,6 @@ export class DataService {
 
   // Delete resale property (admin)
   static async deleteResaleProperty(id: string): Promise<boolean> {
-    if (isGitHubPages) {
-      console.warn('⚠️ Cannot delete property on GitHub Pages - read-only mode');
-      return false;
-    }
-    
     try {
       await this.apiCall(`${API_BASE_URL}/resale-properties/${id}`, {
         method: 'DELETE',

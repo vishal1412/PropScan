@@ -1,18 +1,20 @@
 {
   "name": "propscan-backend",
   "version": "1.0.0",
-  "description": "PropScan Backend API Server - Express.js API for property management, content extraction, and data operations",
+  "description": "PropScan Backend API Server - Serverless functions for property management, content extraction, and data operations",
   "main": "src/api-server.js",
   "scripts": {
     "start": "node src/api-server.js",
-    "dev": "cd src && node api-server.js"
+    "dev": "cd src && node api-server.js",
+    "vercel-build": "echo 'Vercel serverless functions ready'"
   },
   "keywords": [
     "propscan",
     "real-estate",
     "property",
     "api",
-    "express"
+    "serverless",
+    "vercel"
   ],
   "author": "PropScan Team",
   "license": "MIT",
@@ -26,5 +28,7 @@
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  }
 }

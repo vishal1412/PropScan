@@ -144,7 +144,7 @@ module.exports = async (req, res) => {
       projectImages: extractedData.projectImages.length
     });
 
-    res.json(extractedData);
+    res.json({ data: extractedData });
 
   } catch (error) {
     console.error('[Extract] Error:', error.message);

@@ -235,7 +235,7 @@ export class DataService {
         const allProperties = await this.apiCall<PropertiesData>(`${BASE_PATH}/data/properties.json`);
         return allProperties[city.toLowerCase() as keyof PropertiesData] || [];
       }
-      return await this.apiCall<Project[]>(`${API_BASE_URL}/properties/${city.toLowerCase()}`);
+      return await this.apiCall<Project[]>(`${API_BASE_URL}/properties?city=${city.toLowerCase()}`);
     } catch (error) {
       console.error('Error loading properties for city:', error);
       return [];
@@ -244,7 +244,7 @@ export class DataService {
 
   static async addProperty(city: string, project: Omit<Project, 'id' | 'createdAt'>): Promise<boolean> {
     try {
-      await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}`, {
+      await this.apiCall(`${API_BASE_URL}/properties?city=${city.toLowerCase()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(project),
@@ -259,7 +259,7 @@ export class DataService {
 
   static async updateProperty(city: string, projectId: string, updates: Partial<Project>): Promise<boolean> {
     try {
-      await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}/${projectId}`, {
+      await this.apiCall(`${API_BASE_URL}/properties?city=${city.toLowerCase()}&id=${projectId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
@@ -274,7 +274,7 @@ export class DataService {
 
   static async deleteProperty(city: string, projectId: string): Promise<boolean> {
     try {
-      await this.apiCall(`${API_BASE_URL}/properties/${city.toLowerCase()}/${projectId}`, {
+      await this.apiCall(`${API_BASE_URL}/properties?city=${city.toLowerCase()}&id=${projectId}`, {
         method: 'DELETE',
       });
       console.log('✅ Property deleted from JSON file');

@@ -507,7 +507,7 @@ export class DataService {
 
   // Extract project content from official website
   static async extractProjectContent(url: string, projectId: string): Promise<any> {
-    const EXTRACT_URL = `${API_BASE_URL}/projects/extract`;
+    const EXTRACT_URL = `${API_BASE_URL}/extract`;
     
     try {
       console.log(`[Extract] Starting extraction for ${projectId} from ${url}`);

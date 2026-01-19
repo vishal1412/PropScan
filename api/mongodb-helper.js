@@ -37,19 +37,26 @@ async function getProperties() {
   const collection = await getCollection('properties');
   const docs = await collection.find({}).toArray();
   
-  // Return in expected format: { gurgaon: [], noida: [], dubai: [] }
+  // Default structure
+  const defaultStructure = { gurgaon: [], noida: [], dubai: [] };
+  
+  // Return default if no documents
   if (docs.length === 0) {
-    return { gurgaon: [], noida: [], dubai: [] };
+    return defaultStructure;
   }
   
-  // If we have a document with city structure, return it
+  // If we have a document with city structure, ensure all cities exist
   const propertiesDoc = docs[0];
-  if (propertiesDoc.gurgaon || propertiesDoc.noida || propertiesDoc.dubai) {
-    return propertiesDoc;
+  if (propertiesDoc.gurgaon !== undefined || propertiesDoc.noida !== undefined || propertiesDoc.dubai !== undefined) {
+    return {
+      gurgaon: propertiesDoc.gurgaon || [],
+      noida: propertiesDoc.noida || [],
+      dubai: propertiesDoc.dubai || []
+    };
   }
   
-  // Otherwise initialize empty structure
-  return { gurgaon: [], noida: [], dubai: [] };
+  // Otherwise return default structure
+  return defaultStructure;
 }
 
 async function updateProperties(properties) {

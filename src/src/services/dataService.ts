@@ -8,7 +8,7 @@ const isGitHubPages = window.location.hostname.includes('github.io');
 // For GitHub Pages: Set VITE_API_URL environment variable to your deployed backend URL
 // For localhost: Uses local Express server
 const API_BASE_URL = isGitHubPages 
-  ? (import.meta.env.VITE_API_URL || 'https://your-backend-url.com/api') 
+  ? 'https://propscan1-backend.vercel.app/api'
   : 'http://localhost:3001/api';
 const BASE_PATH = isGitHubPages ? '/PropScan' : '';
 
@@ -538,7 +538,7 @@ export class DataService {
       
       // Check if it's a network error
       if (error.message.includes('fetch') || error.message.includes('NetworkError')) {
-        throw new Error('Cannot connect to extraction service. Make sure the API server is running on http://localhost:3001');
+        throw new Error(`Cannot connect to extraction service at ${API_BASE_URL}. Please verify the backend server is running.`);
       }
       
       throw new Error(error.message || 'Failed to extract content from website');

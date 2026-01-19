@@ -1,41 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/api/properties",
-      "dest": "/api/properties.js"
-    },
-    {
-      "src": "/api/testimonials",
-      "dest": "/api/testimonials.js"
-    },
-    {
-      "src": "/api/leads",
-      "dest": "/api/leads.js"
-    },
-    {
-      "src": "/api/resale-properties",
-      "dest": "/api/resale-properties.js"
-    },
-    {
-      "src": "/api/projects/extract",
-      "dest": "/api/extract.js"
-    },
-    {
-      "src": "/api/validate-images",
-      "dest": "/api/validate-images.js"
-    }
-  ],
   "functions": {
     "api/**/*.js": {
       "memory": 1024,

@@ -219,9 +219,6 @@ export class DataService {
   // PROPERTIES
   static async loadProperties(): Promise<PropertiesData> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall<PropertiesData>(`${BASE_PATH}/data/properties.json`);
-      }
       return await this.apiCall<PropertiesData>(`${API_BASE_URL}/properties`);
     } catch (error) {
       console.error('Error loading properties:', error);
@@ -231,10 +228,6 @@ export class DataService {
 
   static async getPropertiesByCity(city: string): Promise<Project[]> {
     try {
-      if (isGitHubPages) {
-        const allProperties = await this.apiCall<PropertiesData>(`${BASE_PATH}/data/properties.json`);
-        return allProperties[city.toLowerCase() as keyof PropertiesData] || [];
-      }
       return await this.apiCall<Project[]>(`${API_BASE_URL}/properties?city=${city.toLowerCase()}`);
     } catch (error) {
       console.error('Error loading properties for city:', error);
@@ -288,9 +281,6 @@ export class DataService {
   // TESTIMONIALS
   static async loadTestimonials(): Promise<Testimonial[]> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall<Testimonial[]>(`${BASE_PATH}/data/testimonials.json`);
-      }
       return await this.apiCall<Testimonial[]>(`${API_BASE_URL}/testimonials`);
     } catch (error) {
       console.error('Error loading testimonials:', error);
@@ -344,9 +334,6 @@ export class DataService {
   // LEADS
   static async loadLeads(): Promise<Lead[]> {
     try {
-      if (isGitHubPages) {
-        return await this.apiCall<Lead[]>(`${BASE_PATH}/data/leads.json`);
-      }
       return await this.apiCall<Lead[]>(`${API_BASE_URL}/leads`);
     } catch (error) {
       console.error('Error loading leads:', error);
@@ -382,7 +369,7 @@ export class DataService {
     }
   }
 
-  // CITIES
+  // CITIES (keep static for now)
   static async loadCities(): Promise<Array<{ id: string; name: string; slug: string }>> {
     try {
       if (isGitHubPages) {

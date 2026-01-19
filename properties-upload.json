@@ -1,0 +1,434 @@
+{
+  "gurgaon": [
+    {
+      "name": "DLF The Arbour",
+      "location": "Sector 63, Golf Course Extension Road",
+      "latitude": 28.3949,
+      "longitude": 77.0677,
+      "price": "₹7.25 Cr onwards",
+      "possession": "Dec 2026",
+      "builder": "DLF",
+      "size": "3950 sq ft",
+      "configuration": "4 BHK + Utility",
+      "developer": "DLF Limited",
+      "delivery": "Jun 2026",
+      "paymentPlan": "Construction Linked",
+      "description": "Ultra-luxury high-rise with low density and large floor plates.",
+      "highlights": "• Single tower luxury concept\n• Only 4 apartments per core\n• Premium specifications",
+      "amenities": [],
+      "rera": "HRERA-GGM-671-2023",
+      "images": [
+        "https://th.bing.com/th/id/OIP.w6UljuMXSSMfBU37A64EQAHaFj?w=220&h=180&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3"
+      ],
+      "status": "active",
+      "id": "prop_1767813037204_43nktbcan",
+      "createdAt": "2026-01-07T19:10:37.204Z",
+      "pricePerSqft": "₹18,500 – ₹19,500",
+      "projectStatus": "Ready to Move",
+      "verifiedStatus": "In Progress"
+    },
+    {
+      "name": "M3M Altitude",
+      "location": "Sector 65, Golf Course Extension Road",
+      "latitude": 28.3833,
+      "longitude": 77.0717,
+      "price": "₹5.50 Cr onwards",
+      "pricePerSqft": "₹17,000 – ₹18,500",
+      "possession": "Dec 2026",
+      "builder": "M3M India",
+      "size": "3750 sq ft",
+      "configuration": "4 BHK",
+      "developer": "M3M India Pvt Ltd",
+      "delivery": "Jun 2026",
+      "paymentPlan": "Construction Linked",
+      "description": "Ultra-premium high-rise with panoramic views.",
+      "highlights": "• Private lift lobby\n• High ceiling homes\n• Luxury positioning",
+      "amenities": [],
+      "rera": "HRERA-GGM-692-2023",
+      "images": [
+        "https://www.m3mproperties.com/project_pics/M3M%20Altitude%20banners-28717.jpg"
+      ],
+      "status": "active",
+      "projectStatus": "Under Construction",
+      "id": "prop_1767815841447_xwta7lq7l",
+      "createdAt": "2026-01-07T19:57:21.447Z",
+      "verifiedStatus": "In Progress"
+    },
+    {
+      "name": "Godrej Aristocrat",
+      "location": "Sector 49, Sohna Road, Gurgaon",
+      "latitude": 28.4089,
+      "longitude": 77.0547,
+      "price": "₹3.60 Cr onwards",
+      "pricePerSqft": "₹15,000 – ₹16,500",
+      "possession": "Mar 2027",
+      "builder": "Godrej Properties",
+      "size": "1800 – 2800 sq ft",
+      "configuration": "3 & 4 BHK",
+      "developer": "Godrej Properties Ltd",
+      "delivery": "Sep 2026",
+      "paymentPlan": "10:90",
+      "description": "Green luxury living on Sohna Road",
+      "highlights": "• Central greens\n• Low-density planning\n• Godrej brand trust",
+      "amenities": [],
+      "rera": "HRERA-GGM-767-2023",
+      "images": [
+        "https://gplwebsitecdnblob.blob.core.windows.net/godrej-cdn/Images/ee8e9f00-0763-47cc-a200-a60118025a16.webp"
+      ],
+      "status": "active",
+      "projectStatus": "New Launch",
+      "id": "prop_1767816218288_z3gvny4mq",
+      "createdAt": "2026-01-07T20:03:38.288Z",
+      "verifiedStatus": "In Progress"
+    },
+    {
+      "name": "Elan The Presidential",
+      "location": "Sector 106, Dwarka Expressway",
+      "latitude": 28.4272,
+      "longitude": 76.9636,
+      "price": "₹4.85 Cr onwards",
+      "pricePerSqft": "₹19,500 – ₹22,000",
+      "possession": "Currently Not Available",
+      "builder": "Elan Group",
+      "size": "2450 – 6000 sq ft",
+      "configuration": "3, 4 & 5 BHK",
+      "developer": "Elan Limited",
+      "delivery": "Currently Not Available",
+      "paymentPlan": "Construction Linked ",
+      "description": "Ultra-luxury high-rise residences on Dwarka Expressway.",
+      "highlights": "• Private lift lobby\n• Landmark architecture\n• Tall towers",
+      "amenities": [
+        "Clubhouse, Spa, Pool, Sports Zone"
+      ],
+      "rera": "HRERA-GGM-561-2022",
+      "images": [
+        "https://th.bing.com/th/id/OIP.bkn8FNrGF_Osn8uE-p68YAHaDj?w=330&h=168&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3"
+      ],
+      "status": "active",
+      "projectStatus": "Under Construction",
+      "verifiedStatus": "In Progress",
+      "id": "prop_1767911523518_060h8yxj3",
+      "createdAt": "2026-01-08T22:32:03.519Z"
+    },
+    {
+      "name": "Emaar Serenity Hills",
+      "location": "Sector 86",
+      "latitude": 28.4031,
+      "longitude": 76.9729,
+      "price": "~₹2.98 Cr",
+      "pricePerSqft": "Under Process ",
+      "possession": "Under process",
+      "builder": "Emaar India / Emaar MGF (India arm)",
+      "size": "under process",
+      "configuration": "3-4 BHK ",
+      "developer": "Emaar India Pvt. Ltd.",
+      "delivery": "under process",
+      "paymentPlan": "Under process",
+      "description": "Emaar’s latest Gurgaon offering positioned as a luxury, green-forward gated community with large central greens, premium finishes and high-end clubhouse / amenities.",
+      "highlights": "",
+      "amenities": [],
+      "rera": "",
+      "images": [
+        "https://emaar-serenityhills.in/wp-content/uploads/2025/11/Lucid_Origin__campaignfocus_Elevation_projectname_Emaar_Sereni_2.jpg"
+      ],
+      "status": "active",
+      "projectStatus": "New Launch",
+      "verifiedStatus": "In Progress",
+      "id": "prop_1768119419526_wdmwaabka",
+      "createdAt": "2026-01-11T08:16:59.527Z"
+    },
+    {
+      "name": "Ganga Nandaka",
+      "location": "Sector 84, Gurugram (Near Dwarka Expressway / NH-48)",
+      "latitude": 28.4018,
+      "longitude": 76.9812,
+      "price": "₹4.42 Cr , ₹5.58 Cr , ₹8.16 Cr",
+      "pricePerSqft": "₹14,000 – ₹15,000 + depending on floor & view",
+      "possession": "2028 (Feb/Aug 2028 range)",
+      "builder": "Ganga Realty (a division of Ganga Global Homes Pvt. Ltd.)",
+      "size": "~3050 sq.ft. ,~3850 sq.ft. , ~5600 sq.ft.",
+      "configuration": "3 BHK + SQ , 4 BHK + SQ, 5 BHK / Penthouse",
+      "developer": "Ganga Realty",
+      "delivery": "2028 (Feb/Aug 2028 range)",
+      "paymentPlan": "",
+      "description": "Project Type: Luxury Residential Apartments & Penthouses\nTotal Land Area: ~8.34 – 8.38 Acres\nTotal Towers: 4 towers\nFloors: ~46 – 47 storeys per tower\nTotal Units: ~300 + residential apartments",
+      "highlights": "",
+      "amenities": [],
+      "rera": "GGM/752/484/2023/96",
+      "images": [
+        "https://www.gangarealty.com/nandaka/images/building1.jpg"
+      ],
+      "status": "active",
+      "projectStatus": "Under Construction",
+      "verifiedStatus": "In Progress",
+      "id": "prop_1768122776392_pnf8xzgz5",
+      "createdAt": "2026-01-11T09:12:56.392Z",
+      "landArea": "~8.34 – 8.38 Acres",
+      "numberOfTowers": 4,
+      "numberOfFloors": "",
+      "brochurePath": "/brochures/1768153796911_Ganga_Nandaka_Brochure.pdf",
+      "highlighted": "true",
+      "officialWebsite": "https://www.gangarealty.com/nandaka/",
+      "overview": "",
+      "detailedAmenities": [],
+      "floorPlans": [
+        {
+          "id": "aebf2b43e09bb131",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/0_769aa887.png",
+          "description": null
+        },
+        {
+          "id": "cc981940339c9f95",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/1_c29d9337.png",
+          "description": null
+        },
+        {
+          "id": "e62e01cd9a31704b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/2_384f0f0d.png",
+          "description": null
+        },
+        {
+          "id": "adfa695e0e09aab4",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/3_358b7704.png",
+          "description": null
+        },
+        {
+          "id": "e2ba2e51142437be",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/4_19a338d7.png",
+          "description": null
+        },
+        {
+          "id": "eca33d41874260fa",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/5_11d225c3.png",
+          "description": null
+        },
+        {
+          "id": "0acd3b4354752d86",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/6_0e6dee74.png",
+          "description": null
+        },
+        {
+          "id": "bff6daeec31036bf",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/7_769aa887.png",
+          "description": null
+        },
+        {
+          "id": "e39e7f843156f274",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/8_c29d9337.png",
+          "description": null
+        },
+        {
+          "id": "c3bda51c3e6cd84e",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/9_384f0f0d.png",
+          "description": null
+        },
+        {
+          "id": "f89d244b83396d30",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/10_358b7704.png",
+          "description": null
+        },
+        {
+          "id": "2d516e07a8a5d01b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/11_19a338d7.png",
+          "description": null
+        },
+        {
+          "id": "dbf5b9b7c5a48775",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/12_11d225c3.png",
+          "description": null
+        },
+        {
+          "id": "8aae0f5de9f2572b",
+          "title": "Floor Plan",
+          "image": "/images/projects/Ganga Nandaka/floorplan/13_0e6dee74.png",
+          "description": null
+        }
+      ],
+      "constructionUpdates": [],
+      "locationDetails": {
+        "address": "For more details, call +91-9990084084",
+        "microLocation": null,
+        "description": null,
+        "connectivity": null,
+        "nearbyLandmarks": null
+      },
+      "developerInfo": {
+        "name": null,
+        "about": null,
+        "experience": null
+      },
+      "documents": [],
+      "gallery": {
+        "exterior": [
+          "/images/projects/Ganga Nandaka/exterior/12_4c551fa9.jpg",
+          "/images/projects/Ganga Nandaka/exterior/1_57dfa490.jpg",
+          "/images/projects/Ganga Nandaka/exterior/3_21690476.jpg",
+          "/images/projects/Ganga Nandaka/exterior/4_40ff7200.jpg"
+        ],
+        "interior": [
+          "/images/projects/Ganga Nandaka/interior/0_93b3a522.jpg"
+        ],
+        "amenities": [
+          "/images/projects/Ganga Nandaka/amenities/0_508b0013.jpg",
+          "/images/projects/Ganga Nandaka/amenities/1_11b14b46.jpg"
+        ],
+        "location": [
+          "/images/projects/Ganga Nandaka/location/0_896b81b9.webp"
+        ],
+        "construction": [],
+        "floorplan": [
+          "/images/projects/Ganga Nandaka/floorplan/0_769aa887.png",
+          "/images/projects/Ganga Nandaka/floorplan/10_358b7704.png",
+          "/images/projects/Ganga Nandaka/floorplan/12_11d225c3.png",
+          "/images/projects/Ganga Nandaka/floorplan/11_19a338d7.png"
+        ]
+      }
+    },
+    {
+      "name": "Conscient Elaira Residences (Phase 1)",
+      "location": "Sector 80, Gurugram",
+      "latitude": 28.4156,
+      "longitude": 77.0095,
+      "price": "~₹2.60–3.15 Cr",
+      "pricePerSqft": "15000 +PLC+GST ",
+      "possession": "Mar 2031",
+      "builder": "Conscient Infrastructure / Conscient Group",
+      "size": "1,396 sq ft",
+      "configuration": "3 BHK, 3.5 BHK",
+      "developer": "Conscient Infrastructure Pvt. Ltd.",
+      "delivery": "Mar 2031",
+      "paymentPlan": "",
+      "description": "Mid-to-upper segment residential towers designed by Benoy (architectural collaborator cited on developer microsite) offering premium 3/3.5 BHK layouts and clubhouse amenities.",
+      "highlights": "RERA-registered.\nDesigned by Benoy (developer site).\nGood connectivity to NH-48 / Dwarka Expressway corridors.",
+      "amenities": [
+        "Clubhouse, gym, swimming pool, 24×7 security and landscaped podium (portal & developer pages)."
+      ],
+      "rera": "GGM/917/649/2025/20",
+      "images": [
+        "https://conscient-elaira.com/assets/images/gallery/gallery-1.jpg"
+      ],
+      "status": "active",
+      "projectStatus": "Under Construction",
+      "verifiedStatus": "In Progress",
+      "id": "prop_1768125711705_ququatggs",
+      "createdAt": "2026-01-11T10:01:51.705Z",
+      "landArea": "",
+      "numberOfTowers": "",
+      "numberOfFloors": "",
+      "brochurePath": "",
+      "highlighted": false,
+      "officialWebsite": "https://conscientresidences.in/",
+      "overview": "Welcome To\n                        Conscient Elaira Residences\n                        \n                                        \n                    \n                    \n                         \n                            \n                            \n                                  \n                            \n                             \n                            \n                            \n                                \n         Conscient Elaira Residences in Sector 80, Gurgaon, is a luxury residential project designed\nfor those who seek elegance, comfort, and modern living. Designed by renowned\narchitectural firm Benoy, the project seamlessly blends sophistication with functionality. It\nfeatures spacious and elegant 3 & 4 BHK apartments to accommodate diverse family sizes.\nWith world-class amenities, including a grand 75,000 sq ft clubhouse, an infinity pool, and\ndedicated spaces for yoga and meditation, it offers an unparalleled lifestyle for everyone.\nSurrounded by lush green landscapes and breathtaking views of Aravalli Hills, Conscient \n\nElaira Residences is a perfect retreat that combines nature with contemporary design,\noffering residents a serene yet exceptional living experience in the heart of Gurgaon.\nEscape into the peaceful and sophisticating refuge of Conscient Infrastructure luxury flats in Sector 80 of Gurugram. This is how you come back home which is filled with the unmatched luxury and the best level of comfort.",
+      "detailedAmenities": [],
+      "floorPlans": [],
+      "constructionUpdates": [],
+      "locationDetails": {
+        "address": null,
+        "microLocation": "Home\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t+91 9971997281\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation\n\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\tHome\nOverview\nKey Highlights\nAmenities\nPrice\nFloor Plan\nLocation",
+        "description": "This project is RERA registered. | Authorized Channel Partner | Channel Partner RERA Number : Coming soon | Project RERA Number : Coming Soon.",
+        "connectivity": null,
+        "nearbyLandmarks": null
+      },
+      "developerInfo": {
+        "name": null,
+        "about": null,
+        "experience": null
+      },
+      "documents": [],
+      "gallery": {
+        "exterior": [
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/10_9140c74f.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/11_9fcf941f.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/12_7d66cad3.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/exterior/0_d3fab912.webp"
+        ],
+        "interior": [],
+        "amenities": [
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/0_2b2fc0de.webp",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/1_b9ac061a.jpg",
+          "/images/projects/Conscient Elaira Residences (Phase 1)/amenities/2_35122599.jpg"
+        ],
+        "location": [],
+        "construction": []
+      }
+    },
+    {
+      "name": "Aura 79",
+      "location": "Sector 79, Gurugram",
+      "latitude": 28.4178,
+      "longitude": 77.0213,
+      "price": "₹1.92 Cr*",
+      "pricePerSqft": "₹12,900/sq.ft",
+      "possession": "2027-2028",
+      "builder": "Aura Developers",
+      "size": "2.5 BHK – ~1500 sq.ft. • 3 BHK – ~1700 sq.ft. • 3.5 BHK – ~1900 sq.ft",
+      "configuration": "2.5, 3 & 3.5 BHK",
+      "developer": "Aura World Realty (international wellness-focused developer)",
+      "delivery": "",
+      "paymentPlan": "Typically 30:40:30",
+      "description": "Open / Green Space\n~40 % landscaped & open\nApprox. Units\n~500 residences\n",
+      "highlights": "✔ 25,000 sq.ft. Clubhouse with fitness + wellness facilities\n✔ Fully equipped gymnasium and indoor games\n✔ Swimming pool & spa / sauna areas\n✔ Yoga & meditation zones\n✔ Outdoor sports courts & jogging/cycling tracks\n✔ Landscaped gardens & kids’ play areas\n✔ 24×7 concierge & security services\n✔ Concierge desk, co-working lounge, juice bar & café spaces\n✔ EV charging & dedicated parking",
+      "amenities": [],
+      "rera": "Awaiting",
+      "images": [
+        "https://aura79.co.in/img/g4.webp",
+        "https://aura79.co.in/img/g1.webp"
+      ],
+      "status": "active",
+      "projectStatus": "New Launch",
+      "verifiedStatus": "In Progress",
+      "landArea": "~4.6 acres",
+      "numberOfTowers": "5",
+      "numberOfFloors": "27",
+      "brochurePath": "",
+      "highlighted": "false",
+      "id": "prop_1768591225005_8c3or0yjl",
+      "createdAt": "2026-01-16T19:20:25.005Z"
+    }
+  ],
+  "noida": [
+    {
+      "name": "ATS Knightsbridge",
+      "location": "Sector 124, Noida",
+      "latitude": 28.5435,
+      "longitude": 77.4304,
+      "price": "₹7.50 Cr onwards",
+      "pricePerSqft": "₹25,000 – ₹28,000",
+      "possession": "Dec 2026",
+      "builder": "ATS Infrastructure",
+      "size": "6000 – 10,000 sq ft",
+      "configuration": "4 & 6 BHK",
+      "developer": "ATS Group",
+      "delivery": "Jun 2026",
+      "paymentPlan": "Construction Linked",
+      "description": "Ultra-luxury high-rise residences overlooking Yamuna greens.",
+      "highlights": "• Only 2 apartments per floor\n• Private lift lobbies\n• Landmark luxury project",
+      "amenities": [
+        "Infinity Pool, Luxury Clubhouse, Spa, Concierge"
+      ],
+      "rera": "UPRERAPRJ2757",
+      "images": [
+        "data:image/webp;base64,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"
+      ],
+      "status": "active",
+      "projectStatus": "Under Construction",
+      "verifiedStatus": "In Progress",
+      "id": "prop_1767911156772_tfpszryg0",
+      "createdAt": "2026-01-08T22:25:56.773Z"
+    }
+  ],
+  "dubai": []
+}

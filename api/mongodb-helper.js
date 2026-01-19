@@ -129,7 +129,17 @@ async function deleteResaleProperty(id) {
 async function getCities() {
   const collection = await getCollection('cities');
   const cities = await collection.find({}).toArray();
-  return cities.length > 0 ? cities : [];
+  
+  // Return default cities if collection is empty
+  if (cities.length === 0) {
+    return [
+      { id: 'gurgaon', name: 'Gurgaon', slug: 'gurgaon' },
+      { id: 'noida', name: 'Noida', slug: 'noida' },
+      { id: 'dubai', name: 'Dubai', slug: 'dubai' }
+    ];
+  }
+  
+  return cities;
 }
 
 async function updateCities(cities) {

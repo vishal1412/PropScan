@@ -3,8 +3,19 @@
 
 // Detect if we're on GitHub Pages or localhost
 const isGitHubPages = window.location.hostname.includes('github.io');
-const API_BASE_URL = isGitHubPages ? '' : 'http://localhost:3001/api';
+
+// Backend server URL configuration
+// For GitHub Pages: Set VITE_API_URL environment variable to your deployed backend URL
+// For localhost: Uses local Express server
+const API_BASE_URL = isGitHubPages 
+  ? (import.meta.env.VITE_API_URL || 'https://your-backend-url.com/api') 
+  : 'http://localhost:3001/api';
 const BASE_PATH = isGitHubPages ? '/PropScan' : '';
+
+// Warning: GitHub Pages does not support backend servers
+// Features requiring API (extraction, image uploads) need a separate backend deployment
+console.log('[DataService] API Base URL:', API_BASE_URL);
+console.log('[DataService] GitHub Pages Mode:', isGitHubPages);
 
 interface Project {
   id: string;

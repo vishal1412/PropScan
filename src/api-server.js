@@ -6,12 +6,38 @@ const https = require('https');
 const http = require('http');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001; // Support deployment platforms
 const DATA_DIR = path.join(__dirname, 'public', 'data');
 
-// Middleware
-app.use(cors());
+// Enhanced CORS configuration for GitHub Pages and localhost
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',           // Local Vite dev server
+    'http://localhost:3000',           // Alternative local port
+    'https://vishal1412.github.io',   // GitHub Pages
+    'https://vishal1412.github.io/PropScan' // With base path
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'PropScan API Server is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+console.log('🚀 PropScan API Server Starting...');
+console.log('📍 Port:', PORT);
+console.log('📁 Data Directory:', DATA_DIR);
+console.log('🌐 CORS Origins:', corsOptions.origin);
 
 // Import extraction service
 const extractionRouter = require('./api-extract-service');

@@ -540,7 +540,7 @@ export default function CityProjects({ selectedCity }: CityProjectsProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {projects.map((project) => (
+                  {projects && projects.length && projects.map((project) => (
                     <TableRow key={project.id}>
                       <TableCell className="font-medium">{project.name}</TableCell>
                       <TableCell>{project.location}</TableCell>

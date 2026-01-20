@@ -1,13 +1,32 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const cors = require('cors');
 const https = require('https');
 const http = require('http');
+const mongoHelper = require('./mongodb-helper');
 
 const app = express();
 const PORT = process.env.PORT || 3001; // Support deployment platforms
 const DATA_DIR = path.join(__dirname, 'public', 'data');
+
+// Track MongoDB availability
+let isMongoAvailable = false;
+
+// Test MongoDB connection at startup
+(async () => {
+  try {
+    console.log('🔌 Testing MongoDB connection...');
+    await mongoHelper.connectToDatabase();
+    isMongoAvailable = true;
+    console.log('✅ MongoDB connected successfully');
+  } catch (error) {
+    isMongoAvailable = false;
+    console.log('⚠️  MongoDB not available, using JSON files fallback');
+    console.log('   Error:', error.message);
+  }
+})();
 
 // Enhanced CORS configuration for GitHub Pages and localhost
 const corsOptions = {
@@ -26,12 +45,24 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'PropScan API Server is running',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    // Test MongoDB connection
+    await mongoHelper.connectToDatabase();
+    res.json({ 
+      status: 'ok', 
+      message: 'PropScan API Server is running',
+      database: 'MongoDB connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'error',
+      message: 'PropScan API Server is running but database connection failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 console.log('🚀 PropScan API Server Starting...');
@@ -70,51 +101,56 @@ async function writeJsonFile(filename, data) {
 // ========== TESTIMONIALS ==========
 app.get('/api/testimonials', async (req, res) => {
   try {
-    const data = await readJsonFile('testimonials.json');
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'testimonials.json'), 'utf-8'));
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getTestimonials();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read testimonials' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'testimonials.json'), 'utf-8'));
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read testimonials' });
+    }
   }
 });
 
 app.post('/api/testimonials', async (req, res) => {
   try {
-    const testimonials = await readJsonFile('testimonials.json');
     const newTestimonial = {
       ...req.body,
       id: `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date().toISOString(),
     };
-    testimonials.push(newTestimonial);
-    await writeJsonFile('testimonials.json', testimonials);
-    res.json(newTestimonial);
+    const result = await mongoHelper.addTestimonial(newTestimonial);
+    res.json(result);
   } catch (error) {
+    console.error('Error adding testimonial:', error);
     res.status(500).json({ error: 'Failed to add testimonial' });
   }
 });
 
 app.put('/api/testimonials/:id', async (req, res) => {
   try {
-    const testimonials = await readJsonFile('testimonials.json');
-    const index = testimonials.findIndex(t => t.id === req.params.id);
-    if (index === -1) {
-      return res.status(404).json({ error: 'Testimonial not found' });
-    }
-    testimonials[index] = { ...testimonials[index], ...req.body };
-    await writeJsonFile('testimonials.json', testimonials);
-    res.json(testimonials[index]);
+    await mongoHelper.updateTestimonial(req.params.id, req.body);
+    res.json({ ...req.body, id: req.params.id });
   } catch (error) {
+    console.error('Error updating testimonial:', error);
     res.status(500).json({ error: 'Failed to update testimonial' });
   }
 });
 
 app.delete('/api/testimonials/:id', async (req, res) => {
   try {
-    const testimonials = await readJsonFile('testimonials.json');
-    const filtered = testimonials.filter(t => t.id !== req.params.id);
-    await writeJsonFile('testimonials.json', filtered);
+    await mongoHelper.deleteTestimonial(req.params.id);
     res.json({ success: true });
   } catch (error) {
+    console.error('Error deleting testimonial:', error);
     res.status(500).json({ error: 'Failed to delete testimonial' });
   }
 });
@@ -122,36 +158,46 @@ app.delete('/api/testimonials/:id', async (req, res) => {
 // ========== LEADS ==========
 app.get('/api/leads', async (req, res) => {
   try {
-    const data = await readJsonFile('leads.json');
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'leads.json'), 'utf-8'));
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getLeads();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read leads' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'leads.json'), 'utf-8'));
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read leads' });
+    }
   }
 });
 
 app.post('/api/leads', async (req, res) => {
   try {
-    const leads = await readJsonFile('leads.json');
     const newLead = {
       ...req.body,
       id: `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date().toISOString(),
     };
-    leads.push(newLead);
-    await writeJsonFile('leads.json', leads);
-    res.json(newLead);
+    const result = await mongoHelper.addLead(newLead);
+    res.json(result);
   } catch (error) {
+    console.error('Error adding lead:', error);
     res.status(500).json({ error: 'Failed to add lead' });
   }
 });
 
 app.delete('/api/leads/:id', async (req, res) => {
   try {
-    const leads = await readJsonFile('leads.json');
-    const filtered = leads.filter(l => l.id !== req.params.id);
-    await writeJsonFile('leads.json', filtered);
+    await mongoHelper.deleteLead(req.params.id);
     res.json({ success: true });
   } catch (error) {
+    console.error('Error deleting lead:', error);
     res.status(500).json({ error: 'Failed to delete lead' });
   }
 });
@@ -159,19 +205,54 @@ app.delete('/api/leads/:id', async (req, res) => {
 // ========== PROPERTIES ==========
 app.get('/api/properties', async (req, res) => {
   try {
-    const data = await readJsonFile('properties.json');
+    // Skip MongoDB if not available to avoid timeout
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'properties.json'), 'utf-8'));
+      
+      // If city query parameter is provided, return only that city's properties
+      const { city } = req.query;
+      if (city && fallbackData[city.toLowerCase()]) {
+        return res.json(fallbackData[city.toLowerCase()]);
+      }
+      
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getProperties();
+    
+    // If city query parameter is provided, return only that city's properties
+    const { city } = req.query;
+    if (city && data[city.toLowerCase()]) {
+      return res.json(data[city.toLowerCase()]);
+    }
+    
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read properties' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'properties.json'), 'utf-8'));
+      
+      // If city query parameter is provided, return only that city's properties
+      const { city } = req.query;
+      if (city && fallbackData[city.toLowerCase()]) {
+        return res.json(fallbackData[city.toLowerCase()]);
+      }
+      
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read properties' });
+    }
   }
 });
 
 app.get('/api/properties/:city', async (req, res) => {
   try {
-    const data = await readJsonFile('properties.json');
+    const data = await mongoHelper.getProperties();
     const city = req.params.city.toLowerCase();
     res.json(data[city] || []);
   } catch (error) {
+    console.error('Error reading properties:', error);
     res.status(500).json({ error: 'Failed to read properties' });
   }
 });
@@ -179,7 +260,7 @@ app.get('/api/properties/:city', async (req, res) => {
 app.post('/api/properties/:city', async (req, res) => {
   try {
     console.log(`📝 POST /api/properties/${req.params.city}`, JSON.stringify(req.body, null, 2));
-    const properties = await readJsonFile('properties.json');
+    const properties = await mongoHelper.getProperties();
     const city = req.params.city.toLowerCase();
     if (!properties[city]) {
       properties[city] = [];
@@ -191,7 +272,7 @@ app.post('/api/properties/:city', async (req, res) => {
       status: req.body.status || 'active',
     };
     properties[city].push(newProperty);
-    await writeJsonFile('properties.json', properties);
+    await mongoHelper.updateProperties(properties);
     console.log(`✅ Property added to ${city}:`, newProperty.id);
     res.json(newProperty);
   } catch (error) {
@@ -203,7 +284,7 @@ app.post('/api/properties/:city', async (req, res) => {
 app.put('/api/properties/:city/:id', async (req, res) => {
   try {
     console.log(`📝 PUT /api/properties/${req.params.city}/${req.params.id}`);
-    const properties = await readJsonFile('properties.json');
+    const properties = await mongoHelper.getProperties();
     const city = req.params.city.toLowerCase();
     if (!properties[city]) {
       return res.status(404).json({ error: 'City not found' });
@@ -213,7 +294,7 @@ app.put('/api/properties/:city/:id', async (req, res) => {
       return res.status(404).json({ error: 'Property not found' });
     }
     properties[city][index] = { ...properties[city][index], ...req.body };
-    await writeJsonFile('properties.json', properties);
+    await mongoHelper.updateProperties(properties);
     console.log(`✅ Property updated in ${city}:`, req.params.id);
     res.json(properties[city][index]);
   } catch (error) {
@@ -224,15 +305,16 @@ app.put('/api/properties/:city/:id', async (req, res) => {
 
 app.delete('/api/properties/:city/:id', async (req, res) => {
   try {
-    const properties = await readJsonFile('properties.json');
+    const properties = await mongoHelper.getProperties();
     const city = req.params.city.toLowerCase();
     if (!properties[city]) {
       return res.status(404).json({ error: 'City not found' });
     }
     properties[city] = properties[city].filter(p => p.id !== req.params.id);
-    await writeJsonFile('properties.json', properties);
+    await mongoHelper.updateProperties(properties);
     res.json({ success: true });
   } catch (error) {
+    console.error('Error deleting property:', error);
     res.status(500).json({ error: 'Failed to delete property' });
   }
 });
@@ -290,28 +372,53 @@ app.get('/api/projects/:projectName/images', async (req, res) => {
 // ========== CITIES ==========
 app.get('/api/cities', async (req, res) => {
   try {
-    const data = await readJsonFile('cities.json');
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'cities.json'), 'utf-8'));
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getCities();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read cities' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'cities.json'), 'utf-8'));
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read cities' });
+    }
   }
 });
 
 // ========== HERO SECTION ==========
 app.get('/api/hero-section', async (req, res) => {
   try {
-    const data = await readJsonFile('heroSection.json');
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'heroSection.json'), 'utf-8'));
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getHeroSection();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read hero section' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'heroSection.json'), 'utf-8'));
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read hero section' });
+    }
   }
 });
 
 app.put('/api/hero-section', async (req, res) => {
   try {
-    await writeJsonFile('heroSection.json', req.body);
+    await mongoHelper.updateHeroSection(req.body);
     res.json(req.body);
   } catch (error) {
+    console.error('Error updating hero section:', error);
     res.status(500).json({ error: 'Failed to update hero section' });
   }
 });
@@ -319,18 +426,31 @@ app.put('/api/hero-section', async (req, res) => {
 // ========== ABOUT US ==========
 app.get('/api/about-us', async (req, res) => {
   try {
-    const data = await readJsonFile('aboutUs.json');
+    if (!isMongoAvailable) {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'aboutUs.json'), 'utf-8'));
+      return res.json(fallbackData);
+    }
+    
+    const data = await mongoHelper.getAboutUs();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read about us' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      const fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'aboutUs.json'), 'utf-8'));
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read about us' });
+    }
   }
 });
 
 app.put('/api/about-us', async (req, res) => {
   try {
-    await writeJsonFile('aboutUs.json', req.body);
+    await mongoHelper.updateAboutUs(req.body);
     res.json(req.body);
   } catch (error) {
+    console.error('Error updating about us:', error);
     res.status(500).json({ error: 'Failed to update about us' });
   }
 });
@@ -406,22 +526,34 @@ app.post('/api/validate-images', async (req, res) => {
 // ========== RESALE PROPERTIES ==========
 app.get('/api/resale-properties', async (req, res) => {
   try {
-    const data = await readJsonFile('resale-properties.json');
-    // Filter based on approval status if query param provided
-    const { status } = req.query;
-    if (status) {
-      const filtered = data.filter(p => p.approvalStatus === status);
-      return res.json(filtered);
+    if (!isMongoAvailable) {
+      let fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'resale-properties.json'), 'utf-8'));
+      if (req.query.status) {
+        fallbackData = fallbackData.filter(p => p.approvalStatus === req.query.status);
+      }
+      return res.json(fallbackData);
     }
+    
+    const { status } = req.query;
+    const data = await mongoHelper.getResaleProperties(status || null);
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read resale properties' });
+    console.error('MongoDB error, falling back to JSON file:', error.message);
+    try {
+      let fallbackData = JSON.parse(await fs.readFile(path.join(DATA_DIR, 'resale-properties.json'), 'utf-8'));
+      if (req.query.status) {
+        fallbackData = fallbackData.filter(p => p.approvalStatus === req.query.status);
+      }
+      res.json(fallbackData);
+    } catch (fallbackError) {
+      console.error('Fallback failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to read resale properties' });
+    }
   }
 });
 
 app.post('/api/resale-properties', async (req, res) => {
   try {
-    const properties = await readJsonFile('resale-properties.json');
     const newProperty = {
       ...req.body,
       id: `resale_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -429,10 +561,9 @@ app.post('/api/resale-properties', async (req, res) => {
       approvalStatus: 'pending', // pending, approved, rejected
       listingStatus: 'active', // active, sold, on-hold
     };
-    properties.push(newProperty);
-    await writeJsonFile('resale-properties.json', properties);
+    const result = await mongoHelper.addResaleProperty(newProperty);
     console.log('✅ Resale property submitted:', newProperty.id);
-    res.json(newProperty);
+    res.json(result);
   } catch (error) {
     console.error('❌ Error adding resale property:', error);
     res.status(500).json({ error: 'Failed to add resale property' });
@@ -441,15 +572,10 @@ app.post('/api/resale-properties', async (req, res) => {
 
 app.put('/api/resale-properties/:id', async (req, res) => {
   try {
-    const properties = await readJsonFile('resale-properties.json');
-    const index = properties.findIndex(p => p.id === req.params.id);
-    if (index === -1) {
-      return res.status(404).json({ error: 'Resale property not found' });
-    }
-    properties[index] = { ...properties[index], ...req.body, updatedAt: new Date().toISOString() };
-    await writeJsonFile('resale-properties.json', properties);
+    const updates = { ...req.body, updatedAt: new Date().toISOString() };
+    await mongoHelper.updateResaleProperty(req.params.id, updates);
     console.log('✅ Resale property updated:', req.params.id);
-    res.json(properties[index]);
+    res.json({ ...updates, id: req.params.id });
   } catch (error) {
     console.error('❌ Error updating resale property:', error);
     res.status(500).json({ error: 'Failed to update resale property' });
@@ -458,9 +584,7 @@ app.put('/api/resale-properties/:id', async (req, res) => {
 
 app.delete('/api/resale-properties/:id', async (req, res) => {
   try {
-    const properties = await readJsonFile('resale-properties.json');
-    const filtered = properties.filter(p => p.id !== req.params.id);
-    await writeJsonFile('resale-properties.json', filtered);
+    await mongoHelper.deleteResaleProperty(req.params.id);
     console.log('✅ Resale property deleted:', req.params.id);
     res.json({ success: true });
   } catch (error) {
@@ -472,4 +596,15 @@ app.delete('/api/resale-properties/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ API Server running on http://localhost:${PORT}`);
   console.log(`📁 Data directory: ${DATA_DIR}`);
+});
+
+// Handle uncaught promise rejections (like MongoDB connection failures)
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('⚠️ Unhandled Promise Rejection:', reason);
+  // Don't crash the server on MongoDB connection failures
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('⚠️ Uncaught Exception:', error);
+  // Don't crash the server
 });
